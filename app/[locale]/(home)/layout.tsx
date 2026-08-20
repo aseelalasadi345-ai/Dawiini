@@ -1,8 +1,8 @@
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/Navbar";
 import "../globals.css";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { routing } from '../../i18n/routing';
+import { routing } from '../../../i18n/routing';
 import { notFound } from 'next/navigation';
 
 export default async function RootLayout({

@@ -15,6 +15,7 @@ export default function Navbar() {
     { label: t("home"), href: "/" },
     { label: t("search"), href: "/search" },
     { label: t("my-medication"), href: "/medications" },
+    { label: t("pharmacies"), href: "/pharmacies" },
   ];
 
   const switchLocale = () => {
@@ -26,10 +27,10 @@ export default function Navbar() {
     <nav className="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-white">
       <Link href="/" className="flex items-center">
         <Image
-          src="/images/Dawiini Logo.png"
+          src="/images/Dawiini_Logo_cropped.png"
           alt="Dawiini"
-          width={160}
-          height={48}
+          width={462}
+          height={137}
           priority
           className="h-10 w-auto md:h-12"
         />
@@ -63,16 +64,24 @@ export default function Navbar() {
           {locale === "en" ? "عربي" : "English"}
         </button>
 
-        <button className="relative">
+        <Link
+          href="/notifications"
+          className="relative"
+          aria-label={t("notifications") ?? "Notifications"}
+        >
           <Bell className="w-5 h-5 text-gray-500" />
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
             3
           </span>
-        </button>
+        </Link>
 
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center font-semibold">
+        <Link
+          href="/personal-profile"
+          className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center font-semibold"
+          aria-label={t("profile") ?? "Profile"}
+        >
           S
-        </div>
+        </Link>
       </div>
     </nav>
   );

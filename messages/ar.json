@@ -2,6 +2,21 @@
   "navbar": {
     "home": "الرئيسية",
     "search": "بحث",
-    "my-medication" : "أدويتي"
+    "my-medication" : "أدويتي",
+    "pharmacies": "الصيدليات"
+  },
+
+  "home": {
+    "greeting": "صباح الخير, {name}",
+    "searchPlaceholder": "بحث عن دواء…",
+    "scanPrescription": "مسح الوصفة",
+    "scanPrescriptionSub": "رفع أو كاميرا",
+    "findPharmacies": "إيجاد الصيدليات",
+    "findPharmaciesSub": "قريب منك الآن",
+    "todayDoses": "جرعات اليوم",
+    "seeAll": "عرض الكل",
+    "recentSearches": "عمليات البحث الأخيرة",
+    "take": "تناول",
+    "snooze": "تأجيل"
   }
 }

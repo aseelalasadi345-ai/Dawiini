@@ -2,6 +2,21 @@
   "navbar": {
     "home": "Home",
     "search": "Search",
-    "my-medication" : "My Medications"
+    "my-medication" : "My Medications",
+    "pharmacies": "Pharmacies"
+  },
+
+  "home": {
+    "greeting": "Good morning, {name}",
+    "searchPlaceholder": "Search for a medication…",
+    "scanPrescription": "Scan Prescription",
+    "scanPrescriptionSub": "Upload or camera",
+    "findPharmacies": "Find Pharmacies",
+    "findPharmaciesSub": "Near you now",
+    "todayDoses": "Today's Doses",
+    "seeAll": "See all",
+    "recentSearches": "Recent Searches",
+    "take": "Take",
+    "snooze": "Snooze"
   }
 }
