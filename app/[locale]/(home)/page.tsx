@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations, getFormatter } from "next-intl/server";
 import DoseList from "../../../components/DoseList";
+import TodayDosesWidget from "./TodayDosesWidget";
 
 const recentSearches = [
   "Paracetamol 500mg",
@@ -12,6 +13,7 @@ const recentSearches = [
 export default async function HomePage() {
   const t = await getTranslations("home");
   const format = await getFormatter();
+  //const doses = await getTodayDoses();
   const today = format.dateTime(new Date(), {
     weekday: "long",
     day: "numeric",
@@ -111,13 +113,13 @@ export default async function HomePage() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-semibold text-[#0F1B34]">{t("todayDoses")}</h2>
           <Link
-            href="/medications"
+            href="/today"
             className="text-xs text-[#2563EB] font-medium hover:underline"
           >
             {t("seeAll")}
           </Link>
         </div>
-        <DoseList />
+        {/* <TodayDosesWidget initialDoses={doses} /> */}
       </div>
 
       {/* Recent searches */}

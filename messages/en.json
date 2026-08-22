@@ -3,7 +3,9 @@
     "home": "Home",
     "search": "Search",
     "my-medication" : "My Medications",
-    "pharmacies": "Pharmacies"
+    "pharmacies": "Pharmacies",
+    "notifications": "Notifications",
+    "profile": "Profile"
   },
 
   "home": {
@@ -18,5 +20,115 @@
     "recentSearches": "Recent Searches",
     "take": "Take",
     "snooze": "Snooze"
+  },
+  
+  "today": {
+    "title": "Today",
+    "take": "Take",
+    "skip": "Skip",
+    "snooze": "Snooze",
+    "taken": "Taken",
+    "skipped": "Skipped"
+  },
+
+  "medicationTabs": {
+    "today": "Today",
+    "medications": "Medications",
+    "saved": "Saved"
+  },
+
+  
+  "medicationCardMenu": {
+    "openMenu": "Open menu",
+    "edit": "Edit",
+    "findInPharmacy": "Find in Pharmacy",
+    "setReminder": "Set Reminder",
+    "delete": "Delete"
+  },
+
+  "medications": {
+    "title": "My Medications",
+    "add": "Add",
+    "since": "Since",
+    "empty": "You haven't added any medications yet."
+  },
+
+  "saved": {
+    "empty": "No saved medications yet.",
+    "view": "View",
+    "unsave": "Remove from saved"
+  },
+
+  "medicationDetail": {
+    "back": "Back",
+    "backToResults": "Back to results",
+    "strength": "Strength",
+    "form": "Form",
+    "findPharmacies": "Find Pharmacies",
+    "addToSchedule": "Add to Schedule",
+    "nearbyPharmacies": "Available at nearby pharmacies",
+    "open": "Open",
+    "closed": "Closed",
+    "inStock": "In Stock",
+    "outOfStock": "Out of Stock",
+    "save": "Save",
+    "unsave": "Remove from saved",
+    "saved": "Saved",
+    "notFound": "Medication not found."
+  },
+
+  "setReminder": {
+    "title": "Set Reminder",
+    "addTime": "Add time",
+    "removeTime": "Remove time",
+    "save": "Save",
+    "close": "Close"
+  },
+
+  "pharmacies": {
+    "title": "Pharmacies",
+    "subtitle": "Browse nearby pharmacies.",
+    "filteredBy": "Showing availability for medication:",
+    "detailPlaceholder": "Pharmacy details coming soon."
+  },
+
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Log in to your Dawiini account.",
+      "identifierLabel": "Email or phone number",
+      "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "rememberMe": "Remember me",
+      "submit": "Log in",
+      "loggingIn": "Logging in...",
+      "orContinueWith": "or continue with",
+      "continueWithGoogle": "Continue with Google",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up"
+    },
+
+    
+    "errors": {
+      "identifierRequired": "This field is required",
+      "identifierInvalid": "Enter a valid email or phone number",
+      "passwordTooShort": "Password must be at least 6 characters"
+    }
+  },
+
+  "addMedication": {
+    "medicationName": "Medication name",
+    "dosage": "Dosage",
+    "frequency": "Frequency",
+    "times": "Times",
+    "addTime": "Add time",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "notes": "Notes",
+    "saveMedication": "Save Medication",
+    "saveChanges": "Save Changes",
+    "editTitle": "Edit Medication",
+    "saving": "Saving..."
   }
 }

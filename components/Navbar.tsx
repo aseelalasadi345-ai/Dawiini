@@ -14,7 +14,7 @@ export default function Navbar() {
   const navLinks = [
     { label: t("home"), href: "/" },
     { label: t("search"), href: "/search" },
-    { label: t("my-medication"), href: "/medications" },
+    { label: t("my-medication"), href: "/today" },
     { label: t("pharmacies"), href: "/pharmacies" },
   ];
 
@@ -67,7 +67,7 @@ export default function Navbar() {
         <Link
           href="/notifications"
           className="relative"
-          aria-label={t("notifications") ?? "Notifications"}
+          aria-label={t("notifications")}
         >
           <Bell className="w-5 h-5 text-gray-500" />
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
@@ -78,7 +78,7 @@ export default function Navbar() {
         <Link
           href="/personal-profile"
           className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center font-semibold"
-          aria-label={t("profile") ?? "Profile"}
+          aria-label={t("profile")}
         >
           S
         </Link>

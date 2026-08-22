@@ -3,7 +3,9 @@
     "home": "الرئيسية",
     "search": "بحث",
     "my-medication" : "أدويتي",
-    "pharmacies": "الصيدليات"
+    "pharmacies": "الصيدليات", 
+    "notifications": "الإشعارات",
+    "profile": "الملف الشخصي"
   },
 
   "home": {
@@ -18,5 +20,114 @@
     "recentSearches": "عمليات البحث الأخيرة",
     "take": "تناول",
     "snooze": "تأجيل"
+  },
+
+  "today": {
+    "title": "اليوم",
+    "take": "تناول",
+    "skip": "تخطي",
+    "snooze": "تأجيل",
+    "taken": "تم تناوله",
+    "skipped": "تم تخطيه"
+  },
+
+  "medicationTabs": {
+    "today": "اليوم",
+    "medications": "الأدوية",
+    "saved": "المحفوظة"
+  },
+
+  "medicationCardMenu": {
+    "openMenu": "فتح القائمة",
+    "edit": "تعديل",
+    "findInPharmacy": "البحث في الصيدلية",
+    "setReminder": "ضبط التذكير",
+    "delete": "حذف"
+  },
+
+  "medications": {
+    "title": "أدويتي",
+    "add": "إضافة",
+    "since": "منذ",
+    "empty": "لم تقم بإضافة أي أدوية بعد."
+  },
+
+  "saved": {
+    "empty": "لا توجد أدوية محفوظة بعد.",
+    "view": "عرض",
+    "unsave": "إزالة من المحفوظات"
+  },
+
+  "medicationDetail": {
+    "back": "رجوع",
+    "backToResults": "العودة إلى النتائج",
+    "strength": "التركيز",
+    "form": "الشكل الصيدلاني",
+    "findPharmacies": "إيجاد الصيدليات",
+    "addToSchedule": "إضافة إلى الجدول",
+    "nearbyPharmacies": "متوفر في الصيدليات القريبة",
+    "open": "مفتوح",
+    "closed": "مغلق",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "save": "حفظ",
+    "unsave": "إزالة من المحفوظات",
+    "saved": "محفوظ",
+    "notFound": "الدواء غير موجود."
+  },
+
+  "setReminder": {
+    "title": "ضبط التذكير",
+    "addTime": "إضافة وقت",
+    "removeTime": "إزالة الوقت",
+    "save": "حفظ",
+    "close": "إغلاق"
+  },
+
+  "pharmacies": {
+    "title": "الصيدليات",
+    "subtitle": "تصفح الصيدليات القريبة منك.",
+    "filteredBy": "عرض التوفر للدواء:",
+    "detailPlaceholder": "تفاصيل الصيدلية قريبًا."
+  },
+
+  "auth": {
+      "login": {
+        "title": "مرحبًا بعودتك",
+        "subtitle": "تسجيل الدخول إلى حسابك في دوايني.",
+        "identifierLabel": "البريد الإلكتروني أو رقم الهاتف",
+        "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
+        "passwordLabel": "كلمة المرور",
+        "forgotPassword": "نسيت كلمة المرور?",
+        "rememberMe": "تذكرني",
+        "submit": "تسجيل الدخول",
+        "loggingIn": "جاري تسجيل الدخول...",
+        "orContinueWith": "أو استمر مع",
+        "continueWithGoogle": "استمر مع Google",
+        "noAccount": "ليس لديك حساب؟",
+        "signUp": "إنشاء حساب"
+    },
+
+    
+    "errors": {
+      "identifierRequired": "هذا الحقل مطلوب",
+      "identifierInvalid": "أدخل بريدًا إلكترونيًا أو رقم هاتف صحيح",
+      "passwordTooShort": "يجب أن تكون كلمة المرور على الأقل 6 أحرف"
+    }
+  },
+
+  "addMedication": {
+    "medicationName": "اسم الدواء",
+    "dosage": "الجرعة",
+    "frequency": "التردد",
+    "times": "الأوقات",
+    "addTime": "إضافة وقت",
+    "startDate": "تاريخ البدء",
+    "endDate": "تاريخ الانتهاء",
+    "notes": "الملاحظات",
+    "saveMedication": "حفظ الدواء",
+    "saveChanges": "حفظ التغييرات",
+    "editTitle": "تعديل الدواء",
+    "saving": "جاري الحفظ..."
   }
 }

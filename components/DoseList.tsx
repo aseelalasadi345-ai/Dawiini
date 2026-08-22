@@ -1,62 +1,81 @@
 "use client";
 
-import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { Dose, DoseStatus } from "../lib/types";
 
-type Dose = {
-  id: string;
-  name: string;
-  time: string;
-  taken: boolean;
-};
+interface DoseListProps {
+  doses: Dose[];
+  onStatusChange: (id: string, status: DoseStatus) => void;
+  variant?: "compact" | "full"; // compact = Home widget, full = Today page
+}
 
-const initialDoses: Dose[] = [
-  { id: "1", name: "Metformin 850mg", time: "08:00", taken: true },
-  { id: "2", name: "Omeprazole 20mg", time: "13:00", taken: false },
-  { id: "3", name: "Atorvastatin 40mg", time: "21:00", taken: false },
-];
-
-export default function DoseList() {
-  const t = useTranslations("home");
-  const [doses, setDoses] = useState(initialDoses);
-
-  const markTaken = (id: string) =>
-    setDoses((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, taken: true } : d)),
-    );
-
+export default function DoseList({
+  doses = [],
+  onStatusChange,
+  variant = "full",
+}: DoseListProps) {
+  const t = useTranslations("today");
+  
   return (
-    <div className="space-y-3">
+    <div className="flex flex-col gap-3">
       {doses.map((dose) => (
         <div
           key={dose.id}
-          className={`flex items-center gap-3 p-3 rounded-xl ${dose.taken ? "bg-gray-50 opacity-60" : "bg-blue-50/50"}`}
+          className="flex items-center justify-between p-4 rounded-[var(--radius-lg)] bg-surface border border-border"
         >
-          <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center text-lg flex-shrink-0 ${dose.taken ? "bg-emerald-100" : "bg-white border border-[#E5E9F0]"}`}
-          >
-            {dose.taken ? "✓" : "💊"}
-          </div>
-          <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-3">
             <div
-              className={`text-sm font-medium ${dose.taken ? "text-[#8A94A6] line-through" : "text-[#0F1B34]"}`}
+              className={`h-10 w-10 rounded-full flex items-center justify-center ${
+                dose.status === "taken" ? "bg-green-100" : "bg-blue-50"
+              }`}
             >
-              {dose.name}
+              {dose.status === "taken" ? "✓" : "💊"}
             </div>
-            <div className="text-xs text-[#8A94A6]">{dose.time}</div>
+            <div>
+              <p
+                className={`font-medium ${
+                  dose.status === "taken" ? "line-through text-muted" : ""
+                }`}
+              >
+                {dose.medicationName} {dose.dose}
+              </p>
+              <p className="text-sm text-muted">{dose.time}</p>
+            </div>
           </div>
-          {!dose.taken && (
-            <div className="flex gap-1.5">
+
+          {dose.status === "pending" ? (
+            <div className="flex gap-2">
               <button
-                onClick={() => markTaken(dose.id)}
-                className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#2563EB] text-white"
+                onClick={() => onStatusChange(dose.id, "taken")}
+                className="px-4 py-1.5 rounded-md bg-blue-600 text-white text-sm"
               >
                 {t("take")}
               </button>
-              <button className="text-xs font-semibold px-2.5 py-1 rounded-lg border border-[#E5E9F0] text-[#8A94A6]">
+              {variant === "full" && (
+                <button
+                  onClick={() => onStatusChange(dose.id, "skipped")}
+                  className="px-4 py-1.5 rounded-md border border-border text-sm"
+                >
+                  {t("skip")}
+                </button>
+              )}
+              <button
+                onClick={() => onStatusChange(dose.id, "pending")}
+                className="px-4 py-1.5 rounded-md border border-border text-sm"
+              >
                 {t("snooze")}
               </button>
             </div>
+          ) : (
+            <span
+              className={`px-3 py-1 rounded-full text-sm ${
+                dose.status === "taken"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-50 text-red-500"
+              }`}
+            >
+              {dose.status === "taken" ? t("taken") : t("skipped")}
+            </span>
           )}
         </div>
       ))}
