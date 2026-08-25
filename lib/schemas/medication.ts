@@ -119,6 +119,14 @@ export const medicationFormSchema = z
 
 export type MedicationFormValues = z.infer<typeof medicationFormSchema>;
 
+// Staggered so switching frequency (or prefilling from a scan) never lands
+// on duplicate times, which the superRefine above would reject.
+export const DEFAULT_TIME_SLOTS = ["08:00", "14:00", "20:00"];
+
+export function defaultTimesFor(frequency: Frequency): string[] {
+  return DEFAULT_TIME_SLOTS.slice(0, REQUIRED_TIME_COUNT[frequency]);
+}
+
 export const FREQUENCY_LABELS: Record<Frequency, string> = {
   once_daily: "Once daily",
   twice_daily: "Twice daily",

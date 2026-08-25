@@ -26,7 +26,9 @@ export default function DoseList({
           <div className="flex items-center gap-3">
             <div
               className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                dose.status === "taken" ? "bg-green-100" : "bg-blue-50"
+                dose.status === "taken"
+                  ? "bg-success-light-strong"
+                  : "bg-primary-light"
               }`}
             >
               {dose.status === "taken" ? "✓" : "💊"}
@@ -47,21 +49,21 @@ export default function DoseList({
             <div className="flex gap-2">
               <button
                 onClick={() => onStatusChange(dose.id, "taken")}
-                className="px-4 py-1.5 rounded-md bg-blue-600 text-white text-sm"
+                className="px-4 py-1.5 rounded-md bg-primary text-white text-sm transition-all hover:opacity-90 active:scale-[0.97]"
               >
                 {t("take")}
               </button>
               {variant === "full" && (
                 <button
                   onClick={() => onStatusChange(dose.id, "skipped")}
-                  className="px-4 py-1.5 rounded-md border border-border text-sm"
+                  className="px-4 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
                 >
                   {t("skip")}
                 </button>
               )}
               <button
                 onClick={() => onStatusChange(dose.id, "pending")}
-                className="px-4 py-1.5 rounded-md border border-border text-sm"
+                className="px-4 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
               >
                 {t("snooze")}
               </button>
@@ -70,8 +72,8 @@ export default function DoseList({
             <span
               className={`px-3 py-1 rounded-full text-sm ${
                 dose.status === "taken"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-50 text-red-500"
+                  ? "bg-success-light-strong text-success"
+                  : "bg-danger-light text-danger"
               }`}
             >
               {dose.status === "taken" ? t("taken") : t("skipped")}

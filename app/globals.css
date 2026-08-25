@@ -18,6 +18,39 @@
   --accent: #17B6C4;
   --accent-light: rgba(23, 182, 196, 0.1);
 
+  /* Primary CTA gradient (blue -> teal), used on every main action button */
+  --gradient-start: var(--primary);
+  --gradient-end: #00D3BD; /* Tailwind v4 teal-400 */
+
+  /* Avatar gradient — deliberately distinct from the CTA gradient above */
+  --avatar-gradient-start: #3080FF; /* Tailwind v4 blue-500 */
+  --avatar-gradient-end: #1447E6; /* Tailwind v4 blue-700 */
+
+  /* Hover-border highlight used on hoverable cards/list rows */
+  --hover-border: #BEDBFF; /* Tailwind v4 blue-200 */
+
+  /* Status: danger (errors, delete, out-of-stock, remove) */
+  --danger: #FB2C36; /* red-500 */
+  --danger-strong: #E40014; /* red-600 — hover shade / darker error text */
+  --danger-light: #FEF2F2; /* red-50 — tinted backgrounds */
+  --danger-light-border: #FFCACA; /* red-200 — tinted borders */
+
+  /* Status: success (in stock, dose taken, back in stock) */
+  --success: #00A544; /* green-600 */
+  --success-light: #F0FDF4; /* green-50 */
+  --success-light-strong: #DCFCE7; /* green-100 — icon circle backgrounds */
+
+  /* Status: warning (disclaimers, refill needed, partial scan) */
+  --warning: #DD7400; /* amber-600 */
+  --warning-strong: #B75000; /* amber-700 — body text on warning banners */
+  --warning-strongest: #953D00; /* amber-800 — warning banner titles */
+  --warning-light: #FFFBEB; /* amber-50 */
+  --warning-light-strong: #FEF3C6; /* amber-100 — icon circle backgrounds */
+  --warning-light-border: #FEE685; /* amber-200 — tinted borders */
+
+  /* Star rating fill — decorative, deliberately distinct from --warning */
+  --rating: #FCBB00; /* amber-400 */
+
   /* Radius (used a lot: rounded-xl / rounded-2xl) */
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -30,7 +63,28 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
   --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-gradient-start: var(--gradient-start);
+  --color-gradient-end: var(--gradient-end);
+  --color-avatar-gradient-start: var(--avatar-gradient-start);
+  --color-avatar-gradient-end: var(--avatar-gradient-end);
+  --color-hover-border: var(--hover-border);
+  --color-danger: var(--danger);
+  --color-danger-strong: var(--danger-strong);
+  --color-danger-light: var(--danger-light);
+  --color-danger-light-border: var(--danger-light-border);
+  --color-success: var(--success);
+  --color-success-light: var(--success-light);
+  --color-success-light-strong: var(--success-light-strong);
+  --color-warning: var(--warning);
+  --color-warning-strong: var(--warning-strong);
+  --color-warning-strongest: var(--warning-strongest);
+  --color-warning-light: var(--warning-light);
+  --color-warning-light-strong: var(--warning-light-strong);
+  --color-warning-light-border: var(--warning-light-border);
+  --color-rating: var(--rating);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -39,4 +93,22 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Buttons/links get their own focus ring below instead of the browser's
+   default blue tap/click highlight, which otherwise lingers after a click. */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
 }

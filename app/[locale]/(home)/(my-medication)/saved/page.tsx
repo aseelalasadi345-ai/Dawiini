@@ -32,16 +32,16 @@ export default function SavedPage() {
           <div className="flex items-center gap-3">
             <Link
               href={`/medications/${med.id}?from=saved`}
-              className="px-4 py-2 rounded-md border border-border text-sm font-medium text-foreground hover:bg-surface transition-colors"
+              className="px-4 py-2 rounded-md border border-border text-sm font-medium text-foreground transition-colors hover:bg-background active:bg-border"
             >
               {t("view")}
             </Link>
             <button
               onClick={() => unsaveMedication(med.id)}
               aria-label={t("unsave")}
-              className="p-1.5 rounded-md hover:bg-surface"
+              className="p-1.5 rounded-md transition-colors hover:bg-background active:bg-border"
             >
-              <Heart size={20} className="fill-red-500 text-red-500" />
+              <Heart size={20} className="fill-danger text-danger" />
             </button>
           </div>
         </div>

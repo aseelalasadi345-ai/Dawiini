@@ -22,10 +22,10 @@ export default function MedicationTabs() {
           <Link
             key={tab.key}
             href={tab.href}
-            className={`flex-1 text-center py-2 rounded-md text-sm font-medium transition-colors ${
+            className={`flex-1 text-center py-2 rounded-md text-sm font-medium transition-colors active:scale-[0.98] ${
               isActive
-                ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white"
-                : "text-muted hover:text-foreground"
+                ? "bg-gradient-to-r from-gradient-start to-gradient-end text-white"
+                : "text-muted hover:text-foreground hover:bg-background"
             }`}
           >
             {t(tab.key)}

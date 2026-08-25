@@ -19,7 +19,7 @@ export default function MyMedicationLayout({
             </h1>
             <Link
               href="/add"
-              className="flex items-center gap-1.5 text-sm font-semibold text-white px-5 py-2.5 rounded-[var(--radius-md)] bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity"
+              className="flex items-center gap-1.5 text-sm font-semibold text-white px-5 py-2.5 rounded-[var(--radius-md)] bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.97]"
             >
               <Plus size={16} strokeWidth={2.5} />
               Add

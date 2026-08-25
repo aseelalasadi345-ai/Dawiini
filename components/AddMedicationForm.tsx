@@ -11,6 +11,7 @@ import {
   FREQUENCIES,
   FREQUENCY_LABELS,
   REQUIRED_TIME_COUNT,
+  defaultTimesFor,
 } from "@/lib/schemas/medication";
 import { Medication } from "@/lib/types";
 import { formValuesToMedication } from "@/lib/mappers/medication";
@@ -46,7 +47,7 @@ export default function AddMedicationForm({
       medicationName: "",
       dosage: "",
       frequency: "once_daily",
-      times: ["08:00"],
+      times: defaultTimesFor("once_daily"),
       startDate: new Date().toISOString().slice(0, 10),
       endDate: "",
       notes: "",
@@ -106,7 +107,7 @@ export default function AddMedicationForm({
       className="flex flex-col gap-5"
     >
       {serverError && (
-        <div className="rounded-md bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+        <div className="rounded-md bg-danger-light border border-danger-light-border text-danger-strong text-sm px-4 py-3">
           {serverError}
         </div>
       )}
@@ -125,10 +126,10 @@ export default function AddMedicationForm({
           placeholder="e.g. Paracetamol"
           {...register("medicationName")}
           aria-invalid={!!errors.medicationName}
-          className="w-full rounded-md border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
         />
         {errors.medicationName && (
-          <p className="text-xs text-red-600 mt-1">
+          <p className="text-xs text-danger-strong mt-1">
             {errors.medicationName.message}
           </p>
         )}
@@ -145,10 +146,10 @@ export default function AddMedicationForm({
           placeholder="e.g. 500mg"
           {...register("dosage")}
           aria-invalid={!!errors.dosage}
-          className="w-full rounded-md border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+          className="w-full rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
         />
         {errors.dosage && (
-          <p className="text-xs text-red-600 mt-1">{errors.dosage.message}</p>
+          <p className="text-xs text-danger-strong mt-1">{errors.dosage.message}</p>
         )}
       </div>
 
@@ -168,13 +169,12 @@ export default function AddMedicationForm({
                   type="button"
                   onClick={() => {
                     field.onChange(freq);
-                    const count = REQUIRED_TIME_COUNT[freq];
-                    setValue("times", Array(count).fill("08:00"));
+                    setValue("times", defaultTimesFor(freq));
                   }}
-                  className={`px-4 py-2 rounded-md border text-sm ${
+                  className={`px-4 py-2 rounded-md border text-sm transition-colors active:scale-[0.97] ${
                     field.value === freq
-                      ? "border-blue-600 text-blue-600"
-                      : "border-border text-muted"
+                      ? "border-primary text-primary"
+                      : "border-border text-muted hover:border-primary/40 hover:text-foreground"
                   }`}
                 >
                   {FREQUENCY_LABELS[freq]}
@@ -196,13 +196,13 @@ export default function AddMedicationForm({
                   type="time"
                   value={time}
                   onChange={(e) => updateTime(i, e.target.value)}
-                  className="rounded-md border border-border px-3 py-2 text-sm"
+                  className="rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
                 />
                 {times.length > requiredCount && (
                   <button
                     type="button"
                     onClick={() => removeTime(i)}
-                    className="text-xs text-red-500"
+                    className="text-xs text-danger rounded-md p-1 transition-colors hover:bg-danger-light active:bg-danger-light-border"
                     aria-label="Remove time"
                   >
                     ×
@@ -213,13 +213,13 @@ export default function AddMedicationForm({
             <button
               type="button"
               onClick={addTime}
-              className="px-3 py-2 rounded-md border border-dashed border-border text-sm text-muted"
+              className="px-3 py-2 rounded-md border border-dashed border-border text-sm text-muted transition-colors hover:border-primary hover:text-primary active:scale-[0.97]"
             >
               + {t("addTime")}
             </button>
           </div>
           {errors.times && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger-strong mt-1">
               {errors.times.message as string}
             </p>
           )}
@@ -236,10 +236,10 @@ export default function AddMedicationForm({
             id="startDate"
             type="date"
             {...register("startDate")}
-            className="w-full rounded-md border border-border px-3 py-2 text-sm"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
           />
           {errors.startDate && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger-strong mt-1">
               {errors.startDate.message}
             </p>
           )}
@@ -252,10 +252,10 @@ export default function AddMedicationForm({
             id="endDate"
             type="date"
             {...register("endDate")}
-            className="w-full rounded-md border border-border px-3 py-2 text-sm"
+            className="w-full rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
           />
           {errors.endDate && (
-            <p className="text-xs text-red-600 mt-1">
+            <p className="text-xs text-danger-strong mt-1">
               {errors.endDate.message}
             </p>
           )}
@@ -272,17 +272,17 @@ export default function AddMedicationForm({
           rows={3}
           placeholder="e.g. Take with food, avoid alcohol..."
           {...register("notes")}
-          className="w-full rounded-md border border-border px-3 py-2 text-sm"
+          className="w-full rounded-md border border-border px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
         />
         {errors.notes && (
-          <p className="text-xs text-red-600 mt-1">{errors.notes.message}</p>
+          <p className="text-xs text-danger-strong mt-1">{errors.notes.message}</p>
         )}
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-blue-600 to-teal-400 disabled:opacity-60"
+        className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:active:scale-100"
       >
         {isSubmitting
           ? t("saving")

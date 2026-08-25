@@ -1,7 +1,7 @@
 "use client";
 
 import { use, useState } from "react";
-import { ChevronLeft, Heart, MapPin } from "lucide-react";
+import { AlertTriangle, ChevronLeft, Heart } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/navigation";
 import { getMedicationCatalogEntry } from "@/lib/mock/medicationCatalog";
@@ -57,7 +57,7 @@ export default function MedicationDetailPage({
   }
 
   return (
-    <div className="p-6 flex flex-col gap-6">
+    <div className="max-w-2xl mx-auto flex flex-col gap-4 p-6">
       <button
         onClick={handleBack}
         className="flex items-center gap-1 text-sm text-muted hover:text-foreground w-fit"
@@ -66,105 +66,127 @@ export default function MedicationDetailPage({
         {cameFromSaved ? t("back") : t("backToResults")}
       </button>
 
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">{entry.name}</h1>
-          <p className="text-sm text-muted">{entry.genericName}</p>
-        </div>
-        <button
-          onClick={handleToggleSaved}
-          aria-label={saved ? t("unsave") : t("save")}
-          className="p-1.5 rounded-md hover:bg-surface"
-        >
-          <Heart
-            size={24}
-            className={saved ? "fill-red-500 text-red-500" : "text-muted"}
-          />
-        </button>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        {entry.categories.map((category) => (
-          <span
-            key={category}
-            className="px-3 py-1 rounded-full text-xs bg-primary-light text-primary"
+      {/* Overview card */}
+      <div className="rounded-2xl bg-surface border border-border shadow-sm p-6 flex flex-col gap-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">
+              {entry.name}
+            </h1>
+            <p className="text-sm text-muted mt-1">
+              {t("genericName")}: {entry.genericName}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleToggleSaved}
+            aria-label={saved ? t("unsave") : t("save")}
+            className="shrink-0 p-2.5 rounded-xl border border-border transition-colors hover:bg-background active:bg-border"
           >
-            {category}
-          </span>
-        ))}
-      </div>
+            <Heart
+              size={18}
+              className={saved ? "fill-danger text-danger" : "text-muted"}
+            />
+          </button>
+        </div>
 
-      <p className="text-sm text-foreground">{entry.description}</p>
-
-      <div>
-        <p className="text-sm font-medium mb-2">{t("strength")}</p>
         <div className="flex flex-wrap gap-2">
-          {entry.strengths.map((strength) => (
-            <button
-              key={strength}
-              type="button"
-              onClick={() => setSelectedStrength(strength)}
-              className={`px-4 py-2 rounded-md border text-sm ${
-                selectedStrength === strength
-                  ? "border-blue-600 text-blue-600"
-                  : "border-border text-muted"
-              }`}
+          {entry.categories.map((category) => (
+            <span
+              key={category}
+              className="px-3 py-1 rounded-full text-xs font-medium bg-primary-light text-primary"
             >
-              {strength}
-            </button>
+              {category}
+            </span>
           ))}
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+            {t("strength")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {entry.strengths.map((strength) => (
+              <button
+                key={strength}
+                type="button"
+                onClick={() => setSelectedStrength(strength)}
+                className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors active:scale-[0.97] ${
+                  selectedStrength === strength
+                    ? "border-primary text-primary"
+                    : "border-border text-muted hover:border-muted"
+                }`}
+              >
+                {strength}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-muted mb-2">
+            {t("form")}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {entry.forms.map((form) => (
+              <button
+                key={form}
+                type="button"
+                onClick={() => setSelectedForm(form)}
+                className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors active:scale-[0.97] ${
+                  selectedForm === form
+                    ? "border-primary text-primary"
+                    : "border-border text-muted hover:border-muted"
+                }`}
+              >
+                {form}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div>
-        <p className="text-sm font-medium mb-2">{t("form")}</p>
-        <div className="flex flex-wrap gap-2">
-          {entry.forms.map((form) => (
-            <button
-              key={form}
-              type="button"
-              onClick={() => setSelectedForm(form)}
-              className={`px-4 py-2 rounded-md border text-sm ${
-                selectedForm === form
-                  ? "border-blue-600 text-blue-600"
-                  : "border-border text-muted"
-              }`}
-            >
-              {form}
-            </button>
-          ))}
+      {/* About card */}
+      <div className="rounded-2xl bg-surface border border-border shadow-sm p-6 flex flex-col gap-4">
+        <h2 className="text-lg font-semibold text-foreground">
+          {t("about")}
+        </h2>
+        <p className="text-sm text-muted leading-relaxed">
+          {entry.description}
+        </p>
+        <div className="flex items-start gap-2 rounded-xl bg-warning-light border border-warning-light-border text-warning-strongest text-sm px-4 py-3">
+          <AlertTriangle size={16} className="shrink-0 mt-0.5" />
+          <p>{entry.disclaimer}</p>
         </div>
       </div>
 
-      <p className="text-xs text-muted italic">{entry.disclaimer}</p>
+      {/* Nearby pharmacies card */}
+      <div className="rounded-2xl bg-surface border border-border shadow-sm p-6 flex flex-col gap-4">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">
+            {t("nearbyPharmacies")}
+          </h2>
+          <p className="text-sm text-muted flex items-center gap-1.5 mt-1">
+            <span className="w-2 h-2 rounded-full bg-success" />
+            {t("pharmaciesNearYou", { count: entry.pharmacies.length })}
+          </p>
+        </div>
 
-      <div className="flex gap-3">
-        <Link
-          href={`/pharmacies?medicationId=${entry.id}`}
-          className="flex-1 text-center py-3 rounded-md border border-border text-sm font-medium hover:bg-surface transition-colors"
-        >
-          {t("findPharmacies")}
-        </Link>
-        <button
-          type="button"
-          onClick={() => setShowSchedule(true)}
-          className="flex-1 py-3 rounded-md text-white text-sm font-medium bg-gradient-to-r from-blue-600 to-teal-400"
-        >
-          {t("addToSchedule")}
-        </button>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold mb-3">{t("nearbyPharmacies")}</h2>
         <div className="flex flex-col gap-2">
           {entry.pharmacies.map((pharmacy) => (
             <Link
               key={pharmacy.pharmacyId}
               href={`/pharmacies/${pharmacy.pharmacyId}`}
-              className="flex items-center justify-between p-4 rounded-md border border-border bg-white hover:bg-surface transition-colors"
+              className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-background transition-colors hover:bg-primary-light/40 active:bg-primary-light"
             >
-              <div className="flex items-center gap-2">
-                <MapPin size={16} className="text-muted shrink-0" />
+              <div className="flex items-center gap-3">
+                <span
+                  className={`w-2 h-2 rounded-full shrink-0 ${
+                    pharmacy.status === "in_stock"
+                      ? "bg-success"
+                      : "bg-danger"
+                  }`}
+                />
                 <div>
                   <p className="text-sm font-medium text-foreground">
                     {pharmacy.name}
@@ -176,10 +198,10 @@ export default function MedicationDetailPage({
                 </div>
               </div>
               <span
-                className={`text-xs font-medium px-2 py-1 rounded-full shrink-0 ${
+                className={`text-sm font-medium shrink-0 ${
                   pharmacy.status === "in_stock"
-                    ? "bg-green-50 text-green-700"
-                    : "bg-red-50 text-red-600"
+                    ? "text-success"
+                    : "text-danger"
                 }`}
               >
                 {pharmacy.status === "in_stock"
@@ -191,18 +213,37 @@ export default function MedicationDetailPage({
         </div>
       </div>
 
-      <button
-        type="button"
-        onClick={handleToggleSaved}
-        className={`w-full py-3 rounded-md border text-sm font-medium flex items-center justify-center gap-2 transition-colors ${
-          saved
-            ? "border-red-500 text-red-500"
-            : "border-border text-foreground hover:bg-surface"
-        }`}
-      >
-        <Heart size={16} className={saved ? "fill-red-500 text-red-500" : ""} />
-        {t("saved")}
-      </button>
+      {/* Actions */}
+      <div className="flex gap-3">
+        <Link
+          href={`/pharmacies?medicationId=${entry.id}`}
+          className="flex-1 text-center py-3 rounded-xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
+        >
+          {t("findPharmacies")}
+        </Link>
+        <button
+          type="button"
+          onClick={() => setShowSchedule(true)}
+          className="flex-1 py-3 rounded-xl border border-primary text-primary text-sm font-semibold transition-colors hover:bg-primary-light active:bg-primary-light/60"
+        >
+          {t("addToSchedule")}
+        </button>
+        <button
+          type="button"
+          onClick={handleToggleSaved}
+          className={`flex-1 py-3 rounded-xl border text-sm font-semibold flex items-center justify-center gap-1.5 transition-colors active:scale-[0.98] ${
+            saved
+              ? "border-danger text-danger hover:bg-danger-light"
+              : "border-border text-muted hover:bg-background active:bg-border"
+          }`}
+        >
+          <Heart
+            size={16}
+            className={saved ? "fill-danger text-danger" : ""}
+          />
+          {saved ? t("saved") : t("save")}
+        </button>
+      </div>
 
       {showSchedule && (
         <SetReminderModal

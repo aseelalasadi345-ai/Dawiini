@@ -31,6 +31,74 @@
     "skipped": "Skipped"
   },
 
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "empty": "You're all caught up.",
+    "items": {
+      "doseReminder": {
+        "title": "Dose reminder",
+        "body": "Time to take Omeprazole 20mg",
+        "time": "10 minutes ago"
+      },
+      "backInStock": {
+        "title": "Back in stock",
+        "body": "Amoxicillin 500mg is now available at Al Dawaa.",
+        "time": "1 hour ago"
+      },
+      "doseTaken": {
+        "title": "Morning dose taken",
+        "body": "You marked Metformin 850mg as taken at 08:04 AM.",
+        "time": "4 hours ago"
+      },
+      "refillNeeded": {
+        "title": "Refill needed",
+        "body": "You have 5 doses of Atorvastatin remaining.",
+        "time": "Yesterday"
+      },
+      "availabilityUpdate": {
+        "title": "Availability update",
+        "body": "Paracetamol 1000mg stock is limited at United Pharmacy.",
+        "time": "2 days ago"
+      }
+    }
+  },
+
+  "profile": {
+    "tabs": {
+      "personalInfo": "Personal Info",
+      "healthInfo": "Health Info",
+      "settings": "Settings"
+    },
+    "personalInfo": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dateOfBirth": "Date of birth",
+      "phone": "Phone",
+      "email": "Email",
+      "save": "Save changes",
+      "saved": "Saved!"
+    },
+    "healthInfo": {
+      "note": "Optional. Helps personalise your experience.",
+      "weight": "Weight (kg)",
+      "height": "Height (cm)",
+      "bloodType": "Blood type",
+      "allergies": "Allergies",
+      "chronicConditions": "Chronic conditions",
+      "save": "Save",
+      "saved": "Saved!"
+    },
+    "settings": {
+      "language": "Language",
+      "notifications": "Notifications",
+      "doseReminders": "Dose reminders",
+      "stockAlerts": "Stock alerts",
+      "pharmacyUpdates": "Pharmacy updates",
+      "logout": "Log out"
+    }
+  },
+
   "medicationTabs": {
     "today": "Today",
     "medications": "Medications",
@@ -43,7 +111,11 @@
     "edit": "Edit",
     "findInPharmacy": "Find in Pharmacy",
     "setReminder": "Set Reminder",
-    "delete": "Delete"
+    "delete": "Delete",
+    "deleteConfirmTitle": "Delete medication?",
+    "deleteConfirmBody": "This will remove {name} from your medications. This can't be undone.",
+    "cancel": "Cancel",
+    "confirmDelete": "Delete"
   },
 
   "medications": {
@@ -62,11 +134,14 @@
   "medicationDetail": {
     "back": "Back",
     "backToResults": "Back to results",
+    "genericName": "Generic name",
+    "about": "About this medication",
     "strength": "Strength",
     "form": "Form",
     "findPharmacies": "Find Pharmacies",
     "addToSchedule": "Add to Schedule",
     "nearbyPharmacies": "Available at nearby pharmacies",
+    "pharmaciesNearYou": "{count} pharmacies near you",
     "open": "Open",
     "closed": "Closed",
     "inStock": "In Stock",
@@ -86,10 +161,99 @@
   },
 
   "pharmacies": {
-    "title": "Pharmacies",
-    "subtitle": "Browse nearby pharmacies.",
-    "filteredBy": "Showing availability for medication:",
-    "detailPlaceholder": "Pharmacy details coming soon."
+    "title": "Nearby Pharmacies",
+    "subtitle": "Browse pharmacies near you.",
+    "filteredBy": "Showing for:",
+    "filteredByNextDose": "Showing for your next dose:",
+    "empty": "No pharmacies match these filters.",
+    "open": "Open",
+    "closed": "Closed",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock",
+    "openUntil": "Open until {time}",
+    "open24": "Open 24 hours",
+    "updatedAgo": "Updated {minutes}m ago",
+    "call": "Call",
+    "directions": "Directions",
+    "filters": {
+      "all": "All",
+      "openNow": "Open now",
+      "inStock": "In stock",
+      "nearby": "< 1km"
+    },
+    "legend": {
+      "inStock": "In stock",
+      "outOfStock": "Out of stock",
+      "closed": "Closed",
+      "here": "You are here"
+    }
+  },
+
+  "pharmacyDetail": {
+    "back": "Back to pharmacies",
+    "notFound": "Pharmacy not found.",
+    "reviews": "{count} reviews",
+    "openingHours": "Opening Hours",
+    "medicationAvailability": "Medication Availability",
+    "plenty": "Plenty",
+    "limited": "Limited",
+    "outOfStock": "Out of stock"
+  },
+
+  "search": {
+    "title": "Search",
+    "scanPrescription": "Scan Prescription",
+    "scanPrescriptionSub": "Upload or camera",
+    "browseCatalog": "Browse Medications"
+  },
+
+  "medicationSearch": {
+    "placeholder": "Search for a medication…",
+    "clear": "Clear search",
+    "noResults": "No medications found — try a different search term.",
+    "matchesIngredient": "Contains: {ingredient}"
+  },
+
+  "mophDrugDetail": {
+    "back": "Back",
+    "notFound": "Medication not found.",
+    "ingredients": "Ingredients",
+    "atcCode": "ATC Code",
+    "category": "Category",
+    "price": "Price",
+    "viewOnMoph": "View on MOPH National Drugs Database"
+  },
+
+  "scan": {
+    "title": "Scan Prescription",
+    "subtitle": "Upload your prescription to auto-detect your medications.",
+    "back": "Back",
+    "rescan": "Re-scan",
+    "dropTitle": "Drop your prescription here",
+    "dropSubtitle": "or click to browse files",
+    "supports": "Supports JPG, PNG, PDF",
+    "or": "or",
+    "useWebcam": "Use webcam",
+    "uploadedTitle": "Prescription uploaded!",
+    "analyseButton": "Analyse Prescription",
+    "analyzing": "Analysing your prescription...",
+    "successTitle": "Prescription analysed",
+    "resultsDetected": "{count} medications detected — review and confirm.",
+    "partialTitle": "Prescription partially analysed",
+    "partialSubtitle": "We could only detect some details — please review and complete the missing fields.",
+    "failureTitle": "We couldn't read this prescription",
+    "failureSubtitle": "Try a clearer photo, or scan again.",
+    "tryAgain": "Try Again",
+    "aiDisclaimer": "AI-assisted scan — results may contain mistakes. Please double-check before confirming.",
+    "strength": "Strength",
+    "frequency": "Frequency",
+    "strengthPlaceholder": "e.g. 500mg",
+    "frequencyPlaceholder": "e.g. Twice daily",
+    "notDetected": "Couldn't detect this — please fill it in.",
+    "removeMedication": "Remove medication",
+    "confirmAndView": "Confirm & View Details",
+    "addAllToSchedule": "Add all to schedule",
+    "noMedicationsLeft": "No medications left to confirm."
   },
 
   "auth": {
@@ -118,6 +282,8 @@
   },
 
   "addMedication": {
+    "prefilledFromScan": "Prefilled from your scanned prescription — please review before saving.",
+    "prefilledFromScanMultiple": "Prefilled from your scanned prescription — please review before saving. {count} more detected medication(s) can be added the same way, one at a time.",
     "medicationName": "Medication name",
     "dosage": "Dosage",
     "frequency": "Frequency",

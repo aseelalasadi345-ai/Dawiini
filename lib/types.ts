@@ -55,3 +55,33 @@ export interface SavedMedication {
   brand: string;
   useCase: string;
 }
+
+export type PharmacyAvailabilityLevel = "plenty" | "limited" | "out_of_stock";
+
+export interface PharmacyMedicationAvailability {
+  medicationName: string;
+  level: PharmacyAvailabilityLevel;
+}
+
+export interface PharmacyHours {
+  days: string; // e.g. "Saturday – Thursday"
+  hours: string; // e.g. "8:00 AM – 11:00 PM"
+}
+
+// A pharmacy location, as shown on the Pharmacies list/detail pages.
+export interface Pharmacy {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  distanceKm: number;
+  isOpen: boolean;
+  is24Hours: boolean;
+  openUntil?: string; // e.g. "11 PM" — omitted when is24Hours is true
+  updatedMinutesAgo: number;
+  rating: number;
+  reviewCount: number;
+  hours: PharmacyHours[];
+  availability: PharmacyMedicationAvailability[];
+  mapPosition: { top: string; left: string }; // percentage position on the mock map
+}

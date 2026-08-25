@@ -56,14 +56,14 @@ export default function MedicationCardMenu({
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setOpen((v) => !v)}
-        className="p-1.5 rounded-md hover:bg-surface text-muted"
+        className="p-1.5 rounded-md text-muted transition-colors duration-150 hover:bg-background hover:text-foreground active:bg-border"
         aria-label={t("openMenu")}
       >
         •••
       </button>
 
       {open && (
-        <div className="absolute end-0 mt-1 w-48 rounded-[var(--radius-lg)] bg-white border border-border shadow-lg z-10 overflow-hidden">
+        <div className="absolute end-0 mt-1 w-48 rounded-lg bg-white border border-border shadow-lg z-10 overflow-hidden">
           {items.map((item) => (
             <button
               key={item.key}
@@ -71,8 +71,10 @@ export default function MedicationCardMenu({
                 item.action();
                 setOpen(false);
               }}
-              className={`w-full text-start px-4 py-2.5 text-sm hover:bg-surface ${
-                item.danger ? "text-red-600" : "text-foreground"
+              className={`w-full text-start px-4 py-2.5 text-sm font-medium transition-colors duration-150 ${
+                item.danger
+                  ? "text-danger-strong hover:bg-danger-light active:bg-danger-light-border"
+                  : "text-foreground hover:bg-background active:bg-border"
               }`}
             >
               {item.label}

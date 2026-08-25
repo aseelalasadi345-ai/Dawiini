@@ -31,6 +31,74 @@
     "skipped": "تم تخطيه"
   },
 
+  "notifications": {
+    "title": "الإشعارات",
+    "markAllRead": "تعليم الكل كمقروء",
+    "empty": "لا توجد إشعارات جديدة.",
+    "items": {
+      "doseReminder": {
+        "title": "تذكير بالجرعة",
+        "body": "حان وقت تناول أوميبرازول 20mg",
+        "time": "منذ 10 دقائق"
+      },
+      "backInStock": {
+        "title": "متوفر من جديد",
+        "body": "أموكسيسيلين 500mg متوفر الآن في صيدلية الدواء.",
+        "time": "منذ ساعة"
+      },
+      "doseTaken": {
+        "title": "تم تناول جرعة الصباح",
+        "body": "تم تسجيل تناول ميتفورمين 850mg الساعة 08:04 صباحًا.",
+        "time": "منذ 4 ساعات"
+      },
+      "refillNeeded": {
+        "title": "الحاجة لإعادة التعبئة",
+        "body": "تبقى لديك 5 جرعات من أتورفاستاتين.",
+        "time": "أمس"
+      },
+      "availabilityUpdate": {
+        "title": "تحديث التوفر",
+        "body": "كمية باراسيتامول 1000mg محدودة في صيدلية يونايتد.",
+        "time": "منذ يومين"
+      }
+    }
+  },
+
+  "profile": {
+    "tabs": {
+      "personalInfo": "المعلومات الشخصية",
+      "healthInfo": "المعلومات الصحية",
+      "settings": "الإعدادات"
+    },
+    "personalInfo": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "dateOfBirth": "تاريخ الميلاد",
+      "phone": "رقم الهاتف",
+      "email": "البريد الإلكتروني",
+      "save": "حفظ التغييرات",
+      "saved": "تم الحفظ!"
+    },
+    "healthInfo": {
+      "note": "اختياري. يساعد في تخصيص تجربتك.",
+      "weight": "الوزن (كغ)",
+      "height": "الطول (سم)",
+      "bloodType": "فصيلة الدم",
+      "allergies": "الحساسية",
+      "chronicConditions": "الأمراض المزمنة",
+      "save": "حفظ",
+      "saved": "تم الحفظ!"
+    },
+    "settings": {
+      "language": "اللغة",
+      "notifications": "الإشعارات",
+      "doseReminders": "تذكيرات الجرعات",
+      "stockAlerts": "تنبيهات التوفر",
+      "pharmacyUpdates": "تحديثات الصيدليات",
+      "logout": "تسجيل الخروج"
+    }
+  },
+
   "medicationTabs": {
     "today": "اليوم",
     "medications": "الأدوية",
@@ -42,7 +110,11 @@
     "edit": "تعديل",
     "findInPharmacy": "البحث في الصيدلية",
     "setReminder": "ضبط التذكير",
-    "delete": "حذف"
+    "delete": "حذف",
+    "deleteConfirmTitle": "حذف الدواء؟",
+    "deleteConfirmBody": "سيتم إزالة {name} من أدويتك. لا يمكن التراجع عن هذا الإجراء.",
+    "cancel": "إلغاء",
+    "confirmDelete": "حذف"
   },
 
   "medications": {
@@ -61,11 +133,14 @@
   "medicationDetail": {
     "back": "رجوع",
     "backToResults": "العودة إلى النتائج",
+    "genericName": "الاسم العلمي",
+    "about": "عن هذا الدواء",
     "strength": "التركيز",
     "form": "الشكل الصيدلاني",
     "findPharmacies": "إيجاد الصيدليات",
     "addToSchedule": "إضافة إلى الجدول",
     "nearbyPharmacies": "متوفر في الصيدليات القريبة",
+    "pharmaciesNearYou": "{count} صيدلية قريبة منك",
     "open": "مفتوح",
     "closed": "مغلق",
     "inStock": "متوفر",
@@ -85,10 +160,99 @@
   },
 
   "pharmacies": {
-    "title": "الصيدليات",
+    "title": "الصيدليات القريبة",
     "subtitle": "تصفح الصيدليات القريبة منك.",
-    "filteredBy": "عرض التوفر للدواء:",
-    "detailPlaceholder": "تفاصيل الصيدلية قريبًا."
+    "filteredBy": "عرض بحسب:",
+    "filteredByNextDose": "عرض لجرعتك القادمة:",
+    "empty": "لا توجد صيدليات تطابق هذه الفلاتر.",
+    "open": "مفتوح",
+    "closed": "مغلق",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "openUntil": "مفتوح حتى {time}",
+    "open24": "مفتوح 24 ساعة",
+    "updatedAgo": "آخر تحديث منذ {minutes} دقيقة",
+    "call": "اتصال",
+    "directions": "الاتجاهات",
+    "filters": {
+      "all": "الكل",
+      "openNow": "مفتوح الآن",
+      "inStock": "متوفر",
+      "nearby": "أقل من 1 كم"
+    },
+    "legend": {
+      "inStock": "متوفر",
+      "outOfStock": "غير متوفر",
+      "closed": "مغلق",
+      "here": "أنت هنا"
+    }
+  },
+
+  "pharmacyDetail": {
+    "back": "العودة إلى الصيدليات",
+    "notFound": "الصيدلية غير موجودة.",
+    "reviews": "{count} تقييم",
+    "openingHours": "ساعات العمل",
+    "medicationAvailability": "توفر الأدوية",
+    "plenty": "متوفر بكثرة",
+    "limited": "كمية محدودة",
+    "outOfStock": "غير متوفر"
+  },
+
+  "search": {
+    "title": "بحث",
+    "scanPrescription": "مسح الوصفة",
+    "scanPrescriptionSub": "رفع أو كاميرا",
+    "browseCatalog": "تصفح الأدوية"
+  },
+
+  "medicationSearch": {
+    "placeholder": "بحث عن دواء…",
+    "clear": "مسح البحث",
+    "noResults": "لم يتم العثور على أدوية — جرّب كلمة بحث مختلفة.",
+    "matchesIngredient": "يحتوي على: {ingredient}"
+  },
+
+  "mophDrugDetail": {
+    "back": "رجوع",
+    "notFound": "الدواء غير موجود.",
+    "ingredients": "المكونات",
+    "atcCode": "رمز ATC",
+    "category": "الفئة",
+    "price": "السعر",
+    "viewOnMoph": "عرض في قاعدة بيانات وزارة الصحة"
+  },
+
+  "scan": {
+    "title": "مسح الوصفة",
+    "subtitle": "ارفع وصفتك الطبية للكشف التلقائي عن أدويتك.",
+    "back": "رجوع",
+    "rescan": "إعادة المسح",
+    "dropTitle": "أفلت الوصفة هنا",
+    "dropSubtitle": "أو اضغط لتصفح الملفات",
+    "supports": "يدعم JPG وPNG وPDF",
+    "or": "أو",
+    "useWebcam": "استخدام الكاميرا",
+    "uploadedTitle": "تم رفع الوصفة!",
+    "analyseButton": "تحليل الوصفة",
+    "analyzing": "جاري تحليل وصفتك...",
+    "successTitle": "تم تحليل الوصفة",
+    "resultsDetected": "تم اكتشاف {count} أدوية — راجعها وأكدها.",
+    "partialTitle": "تم تحليل الوصفة جزئيًا",
+    "partialSubtitle": "تمكنا من اكتشاف بعض التفاصيل فقط — يرجى المراجعة وإكمال الحقول الناقصة.",
+    "failureTitle": "تعذّر قراءة هذه الوصفة",
+    "failureSubtitle": "جرّب صورة أوضح، أو أعد المسح.",
+    "tryAgain": "حاول مرة أخرى",
+    "aiDisclaimer": "مسح بمساعدة الذكاء الاصطناعي — قد تحتوي النتائج على أخطاء. يرجى المراجعة قبل التأكيد.",
+    "strength": "التركيز",
+    "frequency": "التكرار",
+    "strengthPlaceholder": "مثال: 500mg",
+    "frequencyPlaceholder": "مثال: مرتين يوميًا",
+    "notDetected": "تعذّر اكتشاف هذا — يرجى تعبئته.",
+    "removeMedication": "إزالة الدواء",
+    "confirmAndView": "تأكيد وعرض التفاصيل",
+    "addAllToSchedule": "إضافة الكل إلى الجدول",
+    "noMedicationsLeft": "لا توجد أدوية متبقية للتأكيد."
   },
 
   "auth": {
@@ -117,6 +281,8 @@
   },
 
   "addMedication": {
+    "prefilledFromScan": "تمت التعبئة تلقائيًا من الوصفة الممسوحة — يرجى المراجعة قبل الحفظ.",
+    "prefilledFromScanMultiple": "تمت التعبئة تلقائيًا من الوصفة الممسوحة — يرجى المراجعة قبل الحفظ. يمكن إضافة {count} دواء إضافي تم اكتشافه بنفس الطريقة، واحدًا تلو الآخر.",
     "medicationName": "اسم الدواء",
     "dosage": "الجرعة",
     "frequency": "التردد",

@@ -1,45 +1,103 @@
+"use client";
+
+import { useState } from "react";
+import {
+  AlarmClock,
+  AlertTriangle,
+  CheckCircle2,
+  Package,
+  Pill,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import {
+  notifications as initialNotifications,
+  NotificationCategory,
+} from "@/lib/mock/notifications";
 
-type Notification = {
-  icon: string;
-  titleKey: string;
-  bodyKey: string;
-  time: string;
-  unread: boolean;
+const ICON_STYLES: Record<
+  NotificationCategory,
+  { Icon: typeof AlarmClock; bg: string; text: string }
+> = {
+  doseReminder: { Icon: AlarmClock, bg: "bg-danger-light", text: "text-danger" },
+  backInStock: { Icon: CheckCircle2, bg: "bg-success-light", text: "text-success" },
+  doseTaken: { Icon: Pill, bg: "bg-danger-light", text: "text-danger" },
+  refillNeeded: { Icon: AlertTriangle, bg: "bg-warning-light", text: "text-warning" },
+  availabilityUpdate: { Icon: Package, bg: "bg-warning-light", text: "text-warning-strong" },
 };
-
-const notifications: Notification[] = [
-  {
-    icon: "⏰",
-    titleKey: "doseReminder",
-    bodyKey: "doseReminderBody",
-    time: "10m",
-    unread: true,
-  },
-  // ...
-];
 
 export default function NotificationsPage() {
   const t = useTranslations("notifications");
+  const [items, setItems] = useState(initialNotifications);
+
+  const hasUnread = items.some((n) => n.unread);
+
+  function markAllRead() {
+    setItems((prev) => prev.map((n) => ({ ...n, unread: false })));
+  }
+
+  function markRead(id: string) {
+    setItems((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, unread: false } : n)),
+    );
+  }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6">
+    <div className="max-w-2xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-bold text-[#0F1B34]">{t("title")}</h1>
-        <button className="text-xs text-[#2563EB] font-medium hover:underline">
+        <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
+        <button
+          type="button"
+          onClick={markAllRead}
+          disabled={!hasUnread}
+          className="text-sm font-medium text-primary hover:underline disabled:text-muted disabled:no-underline disabled:cursor-default"
+        >
           {t("markAllRead")}
         </button>
       </div>
-      <div className="space-y-2">
-        {notifications.map((n, i) => (
-          <div
-            key={i}
-            className={`p-4 rounded-xl border ${n.unread ? "border-blue-200 bg-blue-50/30" : "border-[#E5E9F0]"}`}
-          >
-            {/* icon + t(n.titleKey) + t(n.bodyKey) */}
-          </div>
-        ))}
-      </div>
+
+      {items.length === 0 ? (
+        <p className="text-sm text-muted text-center py-10">{t("empty")}</p>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {items.map((n) => {
+            const { Icon, bg, text } = ICON_STYLES[n.category];
+            return (
+              <button
+                key={n.id}
+                type="button"
+                onClick={() => markRead(n.id)}
+                className={`w-full text-start flex items-start gap-3 p-4 rounded-xl border transition-all active:scale-[0.99] ${
+                  n.unread
+                    ? "border-hover-border bg-primary-light hover:bg-primary-light/70"
+                    : "border-border bg-surface hover:bg-background"
+                }`}
+              >
+                <span
+                  className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center ${bg} ${text}`}
+                >
+                  <Icon size={16} />
+                </span>
+                <span className="flex-1 min-w-0">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-sm font-semibold text-foreground">
+                      {t(`items.${n.category}.title`)}
+                    </span>
+                    {n.unread && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                    )}
+                  </span>
+                  <span className="block text-sm text-muted mt-0.5">
+                    {t(`items.${n.category}.body`)}
+                  </span>
+                  <span className="block text-xs text-muted mt-1.5">
+                    {t(`items.${n.category}.time`)}
+                  </span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

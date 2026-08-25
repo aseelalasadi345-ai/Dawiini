@@ -35,7 +35,7 @@ export default function EditMedicationModal({
           <button
             onClick={onClose}
             aria-label="Close"
-            className="p-1 rounded-md hover:bg-primary-light text-muted"
+            className="p-1 rounded-md text-muted transition-colors duration-150 hover:bg-background active:bg-border"
           >
             <X size={18} />
           </button>

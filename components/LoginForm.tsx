@@ -34,11 +34,11 @@ export default function LoginForm() {
         <input
           type="text"
           placeholder={t("identifierPlaceholder")}
-          className="w-full px-4 py-3 rounded-lg border border-border bg-white text-sm"
+          className="w-full px-4 py-3 rounded-lg border border-border bg-white text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
           {...register("identifier")}
         />
         {errors.identifier && (
-          <p className="text-red-500 text-xs mt-1">
+          <p className="text-danger text-xs mt-1">
             {tErrors(errors.identifier.message as string)}
           </p>
         )}
@@ -51,7 +51,7 @@ export default function LoginForm() {
           </label>
           <Link
             href="/forgot-password"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-primary hover:underline"
           >
             {t("forgotPassword")}
           </Link>
@@ -59,19 +59,19 @@ export default function LoginForm() {
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"}
-            className="w-full px-4 py-3 rounded-lg border border-border bg-white text-sm"
+            className="w-full px-4 py-3 rounded-lg border border-border bg-white text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary"
             {...register("password")}
           />
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute end-3 top-1/2 -translate-y-1/2 text-muted"
+            className="absolute end-3 top-1/2 -translate-y-1/2 text-muted transition-colors hover:text-foreground"
           >
             👁
           </button>
         </div>
         {errors.password && (
-          <p className="text-red-500 text-xs mt-1">
+          <p className="text-danger text-xs mt-1">
             {tErrors(errors.password.message as string)}
           </p>
         )}
@@ -85,7 +85,7 @@ export default function LoginForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-3 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold disabled:opacity-60"
+        className="w-full py-3 rounded-lg bg-gradient-to-r from-gradient-start to-gradient-end text-white font-semibold transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:active:scale-100"
       >
         {isSubmitting ? t("loggingIn") : t("submit")}
       </button>
@@ -99,7 +99,7 @@ export default function LoginForm() {
 
       <button
         type="button"
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-border text-sm font-medium"
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-lg border border-border text-sm font-medium transition-colors hover:bg-background active:bg-border"
       >
         <span>G</span> {t("continueWithGoogle")}
       </button>
@@ -108,7 +108,7 @@ export default function LoginForm() {
         {t("noAccount")}{" "}
         <Link
           href="/signup"
-          className="text-blue-600 font-medium hover:underline"
+          className="text-primary font-medium hover:underline"
         >
           {t("signUp")}
         </Link>

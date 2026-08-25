@@ -99,6 +99,89 @@ export const medicationCatalog: MedicationCatalogEntry[] = [
     ],
   },
   {
+    id: "metformin-850",
+    name: "Metformin",
+    genericName: "Metformin Hydrochloride",
+    brand: "Generic",
+    useCase: "Type 2 diabetes",
+    categories: ["Diabetes"],
+    strengths: ["500mg", "850mg", "1000mg"],
+    forms: ["Tablet"],
+    description:
+      "Used to control high blood sugar levels in people with type 2 diabetes.",
+    disclaimer:
+      "This information is for general guidance only and does not replace advice from a doctor or pharmacist.",
+    pharmacies: [
+      {
+        pharmacyId: "nahdi-al-olaya",
+        name: "Al Nahdi Pharmacy — Olaya",
+        distance: "0.8 km",
+        isOpen: true,
+        status: "in_stock",
+      },
+      {
+        pharmacyId: "united-malaz",
+        name: "United Pharmacy — Malaz",
+        distance: "3.2 km",
+        isOpen: true,
+        status: "in_stock",
+      },
+    ],
+  },
+  {
+    id: "atorvastatin-40",
+    name: "Atorvastatin",
+    genericName: "Atorvastatin Calcium",
+    brand: "Generic",
+    useCase: "Cholesterol control",
+    categories: ["Cholesterol"],
+    strengths: ["10mg", "20mg", "40mg", "80mg"],
+    forms: ["Tablet"],
+    description:
+      "Used to lower cholesterol and reduce the risk of heart disease and stroke.",
+    disclaimer:
+      "This information is for general guidance only and does not replace advice from a doctor or pharmacist.",
+    pharmacies: [
+      {
+        pharmacyId: "dawaa-king-fahd",
+        name: "Al Dawaa Pharmacy — King Fahd Rd",
+        distance: "1.4 km",
+        isOpen: true,
+        status: "in_stock",
+      },
+      {
+        pharmacyId: "boots-tahlia",
+        name: "Boots Pharmacy — Tahlia St",
+        distance: "2.1 km",
+        isOpen: false,
+        status: "out_of_stock",
+      },
+    ],
+  },
+  {
+    id: "ramipril-5",
+    name: "Ramipril",
+    genericName: "Ramipril",
+    brand: "Generic",
+    useCase: "Blood pressure control",
+    categories: ["Blood Pressure"],
+    strengths: ["2.5mg", "5mg", "10mg"],
+    forms: ["Tablet"],
+    description:
+      "Used to treat high blood pressure and reduce the risk of heart attack or stroke.",
+    disclaimer:
+      "This information is for general guidance only and does not replace advice from a doctor or pharmacist.",
+    pharmacies: [
+      {
+        pharmacyId: "nahdi-al-olaya",
+        name: "Al Nahdi Pharmacy — Olaya",
+        distance: "0.8 km",
+        isOpen: true,
+        status: "in_stock",
+      },
+    ],
+  },
+  {
     id: "voltaren-50",
     name: "Voltaren",
     genericName: "Diclofenac Sodium",
@@ -127,4 +210,19 @@ export function getMedicationCatalogEntry(
   id: string,
 ): MedicationCatalogEntry | undefined {
   return medicationCatalog.find((entry) => entry.id === id);
+}
+
+// Matches a medication from the user's own regimen (Medication.name, e.g.
+// "Metformin") to its catalog entry (MedicationCatalogEntry.id, e.g.
+// "metformin-850") so pages that only know the catalog id — like the
+// pharmacies list's ?medicationId= filter — can be reached from "My
+// Medications". Falls back to undefined for regimen entries with no
+// matching catalog entry (the catalog is a small curated sample).
+export function findMedicationCatalogEntryByName(
+  name: string,
+): MedicationCatalogEntry | undefined {
+  const normalized = name.trim().toLowerCase();
+  return medicationCatalog.find(
+    (entry) => entry.name.toLowerCase() === normalized,
+  );
 }
