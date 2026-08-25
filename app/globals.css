@@ -1,26 +1,27 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #0f172a;
+  background: #ffffff;
+}
+
+/* Arabic body copy reads slightly larger/looser for comfortable reading */
+[dir='rtl'] body {
+  font-family: var(--font-ar), Tahoma, sans-serif;
+  line-height: 1.9;
+}
+
+[dir='ltr'] body {
+  font-family: var(--font-en), system-ui, sans-serif;
+}
+
+/* Keep numerals and phone-mockup chrome LTR even inside an RTL page */
+.force-ltr {
+  direction: ltr;
 }

@@ -1,79 +1,52 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Link, usePathname, useRouter } from "../i18n/navigation";
-import { useLocale, useTranslations } from "next-intl";
-import { Bell } from "lucide-react";
+import { useTranslations, useLocale } from 'next-intl';
+import { Link, usePathname } from '@/i18n/routing';
 
 export default function Navbar() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const t = useTranslations('nav');
   const locale = useLocale();
-  const t = useTranslations("navbar");
-
-  const navLinks = [
-    { label: t("home"), href: "/" },
-    { label: t("search"), href: "/search" },
-    { label: t("my-medication"), href: "/medications" },
-  ];
-
-  const switchLocale = () => {
-    const nextLocale = locale === "en" ? "ar" : "en";
-    router.replace(pathname, { locale: nextLocale });
-  };
+  const pathname = usePathname();
+  const otherLocale = locale === 'en' ? 'ar' : 'en';
 
   return (
-    <nav className="flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-white">
-      <Link href="/" className="flex items-center">
-        <Image
-          src="/images/Dawiini Logo.png"
-          alt="Dawiini"
-          width={160}
-          height={48}
-          priority
-          className="h-10 w-auto md:h-12"
-        />
-      </Link>
-
-      <ul className="flex items-center gap-8">
-        {navLinks.map((link) => {
-          const isActive = pathname === link.href;
-          return (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={
-                  isActive
-                    ? "text-blue-600 font-medium bg-blue-50 px-3 py-1.5 rounded-lg"
-                    : "text-gray-500 hover:text-gray-800 px-3 py-1.5"
-                }
-              >
-                {link.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-
-      <div className="flex items-center gap-4">
-        <button
-          onClick={switchLocale}
-          className="border border-gray-200 rounded-full px-4 py-1.5 text-sm text-gray-600 hover:bg-gray-50"
-        >
-          {locale === "en" ? "عربي" : "English"}
-        </button>
-
-        <button className="relative">
-          <Bell className="w-5 h-5 text-gray-500" />
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
-            3
+    <header className="sticky top-0 z-50 border-b border-brand-border bg-white/90 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-brand-navy">
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-brand-gradient text-sm font-bold text-white">
+            D
           </span>
-        </button>
+          Dawiini
+        </Link>
 
-        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 text-white flex items-center justify-center font-semibold">
-          S
+        <nav className="hidden items-center gap-8 md:flex">
+          <a href="#how-it-works" className="text-sm font-medium text-brand-navy hover:text-brand-blue">
+            {t('howItWorks')}
+          </a>
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href={pathname}
+            locale={otherLocale}
+            className="rounded-lg border border-brand-border px-4 py-2 text-sm font-medium text-brand-navy hover:bg-brand-mist"
+          >
+            {t('langSwitch')}
+          </Link>
+          <Link
+            href="/login"
+            className="rounded-lg border border-brand-blue px-4 py-2 text-sm font-semibold text-brand-blue hover:bg-brand-mist"
+          >
+            {t('login')}
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-lg bg-brand-gradient px-4 py-2 text-sm font-semibold text-white shadow-sm hover:opacity-90"
+          >
+            {t('signUp')}
+          </Link>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
