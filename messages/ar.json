@@ -2,14 +2,18 @@
   "navbar": {
     "home": "الرئيسية",
     "search": "بحث",
-    "my-medication" : "أدويتي",
-    "pharmacies": "الصيدليات", 
+    "my-medication": "أدويتي",
+    "pharmacies": "الصيدليات",
     "notifications": "الإشعارات",
-    "profile": "الملف الشخصي"
+    "profile": "الملف الشخصي",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
   },
-
   "home": {
     "greeting": "صباح الخير, {name}",
+    "greetingMorning": "صباح الخير، {name}",
+    "greetingAfternoon": "مساء الخير، {name}",
+    "greetingEvening": "مساء الخير، {name}",
     "searchPlaceholder": "بحث عن دواء…",
     "scanPrescription": "مسح الوصفة",
     "scanPrescriptionSub": "رفع أو كاميرا",
@@ -21,7 +25,6 @@
     "take": "تناول",
     "snooze": "تأجيل"
   },
-
   "today": {
     "title": "اليوم",
     "take": "تناول",
@@ -30,7 +33,6 @@
     "taken": "تم تناوله",
     "skipped": "تم تخطيه"
   },
-
   "notifications": {
     "title": "الإشعارات",
     "markAllRead": "تعليم الكل كمقروء",
@@ -63,7 +65,6 @@
       }
     }
   },
-
   "profile": {
     "tabs": {
       "personalInfo": "المعلومات الشخصية",
@@ -98,13 +99,11 @@
       "logout": "تسجيل الخروج"
     }
   },
-
   "medicationTabs": {
     "today": "اليوم",
     "medications": "الأدوية",
     "saved": "المحفوظة"
   },
-
   "medicationCardMenu": {
     "openMenu": "فتح القائمة",
     "edit": "تعديل",
@@ -116,20 +115,17 @@
     "cancel": "إلغاء",
     "confirmDelete": "حذف"
   },
-
   "medications": {
     "title": "أدويتي",
     "add": "إضافة",
     "since": "منذ",
     "empty": "لم تقم بإضافة أي أدوية بعد."
   },
-
   "saved": {
     "empty": "لا توجد أدوية محفوظة بعد.",
     "view": "عرض",
     "unsave": "إزالة من المحفوظات"
   },
-
   "medicationDetail": {
     "back": "رجوع",
     "backToResults": "العودة إلى النتائج",
@@ -150,7 +146,6 @@
     "saved": "محفوظ",
     "notFound": "الدواء غير موجود."
   },
-
   "setReminder": {
     "title": "ضبط التذكير",
     "addTime": "إضافة وقت",
@@ -158,7 +153,6 @@
     "save": "حفظ",
     "close": "إغلاق"
   },
-
   "pharmacies": {
     "title": "الصيدليات القريبة",
     "subtitle": "تصفح الصيدليات القريبة منك.",
@@ -187,7 +181,6 @@
       "here": "أنت هنا"
     }
   },
-
   "pharmacyDetail": {
     "back": "العودة إلى الصيدليات",
     "notFound": "الصيدلية غير موجودة.",
@@ -198,21 +191,18 @@
     "limited": "كمية محدودة",
     "outOfStock": "غير متوفر"
   },
-
   "search": {
     "title": "بحث",
     "scanPrescription": "مسح الوصفة",
     "scanPrescriptionSub": "رفع أو كاميرا",
     "browseCatalog": "تصفح الأدوية"
   },
-
   "medicationSearch": {
     "placeholder": "بحث عن دواء…",
     "clear": "مسح البحث",
     "noResults": "لم يتم العثور على أدوية — جرّب كلمة بحث مختلفة.",
     "matchesIngredient": "يحتوي على: {ingredient}"
   },
-
   "mophDrugDetail": {
     "back": "رجوع",
     "notFound": "الدواء غير موجود.",
@@ -222,7 +212,6 @@
     "price": "السعر",
     "viewOnMoph": "عرض في قاعدة بيانات وزارة الصحة"
   },
-
   "scan": {
     "title": "مسح الوصفة",
     "subtitle": "ارفع وصفتك الطبية للكشف التلقائي عن أدويتك.",
@@ -254,32 +243,70 @@
     "addAllToSchedule": "إضافة الكل إلى الجدول",
     "noMedicationsLeft": "لا توجد أدوية متبقية للتأكيد."
   },
-
   "auth": {
-      "login": {
-        "title": "مرحبًا بعودتك",
-        "subtitle": "تسجيل الدخول إلى حسابك في دوايني.",
-        "identifierLabel": "البريد الإلكتروني أو رقم الهاتف",
-        "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
-        "passwordLabel": "كلمة المرور",
-        "forgotPassword": "نسيت كلمة المرور?",
-        "rememberMe": "تذكرني",
-        "submit": "تسجيل الدخول",
-        "loggingIn": "جاري تسجيل الدخول...",
-        "orContinueWith": "أو استمر مع",
-        "continueWithGoogle": "استمر مع Google",
-        "noAccount": "ليس لديك حساب؟",
-        "signUp": "إنشاء حساب"
+    "login": {
+      "title": "مرحبًا بعودتك",
+      "subtitle": "سجّل الدخول إلى حساب دوائيني.",
+      "identifierLabel": "البريد الإلكتروني أو رقم الهاتف",
+      "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "sara@example.com",
+      "passwordLabel": "كلمة المرور",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "rememberMe": "تذكرني",
+      "submit": "تسجيل الدخول",
+      "loggingIn": "جاري تسجيل الدخول...",
+      "orContinueWith": "أو تابع باستخدام",
+      "continueWithGoogle": "المتابعة باستخدام جوجل",
+      "noAccount": "ليس لديك حساب؟",
+      "signUp": "إنشاء حساب",
+      "signUpLink": "إنشاء حساب"
     },
-
-    
+    "forgotPassword": {
+      "backToLogin": "العودة لتسجيل الدخول",
+      "title": "نسيت كلمة المرور؟",
+      "subtitle": "لا تقلق. أدخل بريدك الإلكتروني وسنرسل لك رابط إعادة التعيين.",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "sara@example.com",
+      "submit": "إرسال رابط إعادة التعيين",
+      "submitting": "جارٍ الإرسال...",
+      "successTitle": "تحقق من بريدك الإلكتروني",
+      "successMessage": "إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، فسنرسل رابطًا لإعادة تعيين كلمة المرور."
+    },
+    "signup": {
+      "title": "أنشئ حسابك",
+      "subtitle": "ابدأ بإدارة صحتك اليوم.",
+      "firstNameLabel": "الاسم الأول",
+      "firstNamePlaceholder": "سارة",
+      "lastNameLabel": "الاسم الأخير",
+      "lastNamePlaceholder": "الأحمد",
+      "emailLabel": "البريد الإلكتروني",
+      "emailPlaceholder": "sara@example.com",
+      "passwordLabel": "كلمة المرور",
+      "passwordHint": "8 أحرف على الأقل، تتضمن رقمًا.",
+      "confirmPasswordLabel": "تأكيد كلمة المرور",
+      "agreeText": "أوافق على",
+      "termsOfService": "شروط الخدمة",
+      "and": "و",
+      "privacyPolicy": "سياسة الخصوصية",
+      "submit": "إنشاء حساب",
+      "haveAccount": "لديك حساب بالفعل؟",
+      "loginLink": "تسجيل الدخول",
+      "submitting": "جارٍ إنشاء الحساب..."
+    },
     "errors": {
       "identifierRequired": "هذا الحقل مطلوب",
       "identifierInvalid": "أدخل بريدًا إلكترونيًا أو رقم هاتف صحيح",
-      "passwordTooShort": "يجب أن تكون كلمة المرور على الأقل 6 أحرف"
+      "nameRequired": "هذا الحقل مطلوب",
+      "emailRequired": "البريد الإلكتروني مطلوب",
+      "emailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا",
+      "passwordRequired": "كلمة المرور مطلوبة",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+      "passwordMismatch": "كلمتا المرور غير متطابقتين",
+      "loginFailed": "البريد الإلكتروني أو كلمة المرور غير صحيحة"
     }
   },
-
   "addMedication": {
     "prefilledFromScan": "تمت التعبئة تلقائيًا من الوصفة الممسوحة — يرجى المراجعة قبل الحفظ.",
     "prefilledFromScanMultiple": "تمت التعبئة تلقائيًا من الوصفة الممسوحة — يرجى المراجعة قبل الحفظ. يمكن إضافة {count} دواء إضافي تم اكتشافه بنفس الطريقة، واحدًا تلو الآخر.",
@@ -295,5 +322,152 @@
     "saveChanges": "حفظ التغييرات",
     "editTitle": "تعديل الدواء",
     "saving": "جاري الحفظ..."
+  },
+  "nav": {
+    "howItWorks": "كيف يعمل",
+    "langSwitch": "English",
+    "login": "تسجيل الدخول",
+    "signUp": "إنشاء حساب",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
+  },
+  "hero": {
+    "badge": "متاح الآن في لبنان",
+    "titleLine1": "اعثر على دوائك،",
+    "titleLine2": "اعثر على صيدليتك.",
+    "subtitle": "يساعدك دوائيني على تحديد موقع الأدوية، والتحقق من توفرها في الصيدليات، وإدارة صحتك في مكان واحد.",
+    "getStarted": "ابدأ الآن",
+    "watchDemo": "شاهد العرض التوضيحي",
+    "trust": "أكثر من 50,000 مريض يثقون بدوائيني",
+    "searchPlaceholder": "باراسيتامول 500 ملغ",
+    "nearbyPharmacies": "صيدليات قريبة",
+    "inStockBadge": "متوفر",
+    "updated": "تم التحديث قبل 12 دقيقة",
+    "doseTitle": "موعد الجرعة",
+    "doseTime": "خلال 45 دقيقة",
+    "getDirections": "الحصول على الاتجاهات",
+    "pharmacies": {
+      "alDawaa": "الدواء",
+      "nahdi": "النهدي",
+      "rayi": "الرايه"
+    },
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر"
+  },
+  "features": {
+    "title": "كل ما تحتاجه",
+    "subtitle": "صُمم للمرضى الباحثين عن الوضوح والراحة.",
+    "items": {
+      "availability": {
+        "title": "التوفر الفوري",
+        "description": "اعرف قبل أن تذهب. شاهد حالة المخزون المباشرة في الصيدليات القريبة منك."
+      },
+      "scanner": {
+        "title": "ماسح الوصفات الطبية",
+        "description": "ارفع أو صوّر وصفتك الطبية للعثور على جميع أدويتك دفعة واحدة."
+      },
+      "reminders": {
+        "title": "تذكير بالجرعات",
+        "description": "لا تفوّت جرعة أبدًا. اضبط تذكيرات مخصصة لجدولك."
+      },
+      "bilingual": {
+        "title": "دعم ثنائي اللغة",
+        "description": "دعم كامل للغتين العربية والإنجليزية مع تخطيط من اليمين لليسار."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "كيف يعمل",
+    "steps": {
+      "search": {
+        "title": "ابحث أو امسح",
+        "description": "أدخل اسم الدواء أو امسح وصفتك الطبية."
+      },
+      "availability": {
+        "title": "شاهد التوفر",
+        "description": "تحقق فورًا من الصيدليات القريبة منك التي تتوفر لديها الدواء."
+      },
+      "pharmacy": {
+        "title": "توجه إلى الصيدلية",
+        "description": "احصل على الاتجاهات، اتصل مسبقًا، واستلم دواءك."
+      }
+    },
+    "cta": "ابدأ الآن"
+  },
+  "footer": {
+    "disclaimer": "المعلومات لأغراض مرجعية فقط ولا تُعد استشارة طبية.",
+    "copyright": "© 2025 دوائيني. جميع الحقوق محفوظة.",
+    "staffPortal": "بوابة الموظفين"
+  },
+  "appNav": {
+    "home": "الرئيسية",
+    "search": "بحث",
+    "myMedications": "أدويتي",
+    "pharmacies": "الصيدليات"
+  },
+  "onboarding": {
+    "skipAll": "تخطي الكل",
+    "skipThisStep": "تخطي هذه الخطوة",
+    "stepOf": "الخطوة {step} من {total}",
+    "language": {
+      "title": "اختر لغتك",
+      "subtitle": "دوائيني متاح بالكامل باللغتين الإنجليزية والعربية. يمكنك تغيير ذلك في أي وقت من الإعدادات.",
+      "english": "English",
+      "arabic": "العربية",
+      "selected": "تم الاختيار",
+      "continue": "متابعة"
+    },
+    "location": {
+      "title": "ابحث عن الصيدليات القريبة منك",
+      "subtitle": "اسمح بالوصول إلى الموقع حتى يتمكن دوائيني من عرض الصيدليات وتوفر الأدوية في منطقتك.",
+      "allowTitle": "السماح بالموقع",
+      "allowSubtitle": "أثناء استخدام التطبيق",
+      "enabledTitle": "تم تفعيل الموقع",
+      "enabledSubtitle": "الرياض، المملكة العربية السعودية",
+      "privacyNote": "يُستخدم موقعك فقط للعثور على الصيدليات القريبة ولا يُباع أو يُشارك أبدًا.",
+      "continue": "متابعة"
+    },
+    "notifications": {
+      "title": "لا تفوّت جرعة أبدًا",
+      "subtitle": "فعّل الإشعارات لتصلك تذكيرات فورية بأدويتك وتنبيهات توفر المخزون في الصيدليات.",
+      "allowTitle": "السماح بالإشعارات",
+      "allowSubtitle": "تذكيرات الجرعات وتنبيهات المخزون",
+      "enabledTitle": "تم تفعيل الإشعارات",
+      "enabledSubtitle": "ستصلك إشعارات بتذكيرات الجرعات",
+      "sample1": "أوميبرازول 20 ملغ خلال 30 دقيقة",
+      "sample2": "ميتفورمين متوفر الآن في النهدي",
+      "letsGo": "لنبدأ"
+    }
+  },
+  "notificationsPage": {
+    "title": "الإشعارات",
+    "markAllRead": "تحديد الكل كمقروء",
+    "items": {
+      "doseReminder": {
+        "title": "تذكير بالجرعة",
+        "description": "حان وقت تناول أوميبرازول 20 ملغ",
+        "time": "قبل 10 دقائق"
+      },
+      "backInStock": {
+        "title": "متوفر الآن",
+        "description": "أموكسيسيلين 500 ملغ متوفر الآن في الدواء.",
+        "time": "قبل ساعة"
+      },
+      "morningDoseTaken": {
+        "title": "تم تناول جرعة الصباح",
+        "description": "قمت بتحديد ميتفورمين 850 ملغ كمتناولة الساعة 08:04 صباحًا.",
+        "time": "قبل 4 ساعات"
+      },
+      "refillNeeded": {
+        "title": "يلزم إعادة التعبئة",
+        "description": "لديك 5 جرعات متبقية من أتورفاستاتين.",
+        "time": "أمس"
+      },
+      "availabilityUpdate": {
+        "title": "تحديث التوفر",
+        "description": "مخزون باراسيتامول 1000 ملغ محدود في يونايتد فارمسي.",
+        "time": "قبل يومين"
+      }
+    }
   }
 }

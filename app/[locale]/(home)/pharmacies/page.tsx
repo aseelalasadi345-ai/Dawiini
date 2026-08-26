@@ -93,13 +93,13 @@ export default function PharmaciesPage({ searchParams }: PharmaciesPageProps) {
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         {filters.map((f) => (
           <button
             key={f.key}
             type="button"
             onClick={() => setFilter(f.key)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors active:scale-[0.97] ${
+            className={`px-4 py-2 rounded-full text-sm font-medium text-center transition-colors active:scale-[0.97] ${
               filter === f.key
                 ? "bg-primary text-white"
                 : "bg-surface border border-border text-muted hover:border-hover-border hover:text-foreground"

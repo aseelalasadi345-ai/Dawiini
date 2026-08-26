@@ -12,7 +12,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
     "lucide-react": "^1.32.0",
-    "next": "16.3.1",
+    "next": "16.3.2",
     "next-intl": "^4.13.7",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -21,13 +21,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
+    "@types/node": "20.19.43",
+    "@types/react": "^19.2.18",
     "@types/react-dom": "^19",
     "cheerio": "^1.2.0",
     "eslint": "^9",
-    "eslint-config-next": "16.3.1",
+    "eslint-config-next": "16.3.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }

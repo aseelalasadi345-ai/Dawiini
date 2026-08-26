@@ -21,11 +21,11 @@ export default function DoseList({
       {doses.map((dose) => (
         <div
           key={dose.id}
-          className="flex items-center justify-between p-4 rounded-[var(--radius-lg)] bg-surface border border-border"
+          className="flex flex-col items-start gap-3 p-4 rounded-[var(--radius-lg)] bg-surface border border-border sm:flex-row sm:items-center sm:justify-between"
         >
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <div
-              className={`h-10 w-10 rounded-full flex items-center justify-center ${
+              className={`h-10 w-10 shrink-0 rounded-full flex items-center justify-center ${
                 dose.status === "taken"
                   ? "bg-success-light-strong"
                   : "bg-primary-light"
@@ -33,9 +33,9 @@ export default function DoseList({
             >
               {dose.status === "taken" ? "✓" : "💊"}
             </div>
-            <div>
+            <div className="min-w-0">
               <p
-                className={`font-medium ${
+                className={`truncate font-medium ${
                   dose.status === "taken" ? "line-through text-muted" : ""
                 }`}
               >
@@ -46,24 +46,28 @@ export default function DoseList({
           </div>
 
           {dose.status === "pending" ? (
-            <div className="flex gap-2">
+            <div
+              className={`grid w-full gap-2 sm:w-auto ${
+                variant === "full" ? "grid-cols-3" : "grid-cols-2"
+              }`}
+            >
               <button
                 onClick={() => onStatusChange(dose.id, "taken")}
-                className="px-4 py-1.5 rounded-md bg-primary text-white text-sm transition-all hover:opacity-90 active:scale-[0.97]"
+                className="whitespace-nowrap px-3 py-1.5 rounded-md bg-primary text-white text-sm transition-all hover:opacity-90 active:scale-[0.97]"
               >
                 {t("take")}
               </button>
               {variant === "full" && (
                 <button
                   onClick={() => onStatusChange(dose.id, "skipped")}
-                  className="px-4 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
+                  className="whitespace-nowrap px-3 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
                 >
                   {t("skip")}
                 </button>
               )}
               <button
                 onClick={() => onStatusChange(dose.id, "pending")}
-                className="px-4 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
+                className="whitespace-nowrap px-3 py-1.5 rounded-md border border-border text-sm transition-colors hover:bg-background active:bg-border"
               >
                 {t("snooze")}
               </button>

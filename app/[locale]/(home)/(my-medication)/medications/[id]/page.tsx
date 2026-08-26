@@ -177,17 +177,17 @@ export default function MedicationDetailPage({
             <Link
               key={pharmacy.pharmacyId}
               href={`/pharmacies/${pharmacy.pharmacyId}`}
-              className="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-background transition-colors hover:bg-primary-light/40 active:bg-primary-light"
+              className="flex items-start justify-between gap-3 px-4 py-3 rounded-xl bg-background transition-colors hover:bg-primary-light/40 active:bg-primary-light"
             >
-              <div className="flex items-center gap-3">
+              <div className="flex min-w-0 items-start gap-3">
                 <span
-                  className={`w-2 h-2 rounded-full shrink-0 ${
+                  className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${
                     pharmacy.status === "in_stock"
                       ? "bg-success"
                       : "bg-danger"
                   }`}
                 />
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-medium text-foreground">
                     {pharmacy.name}
                   </p>
@@ -214,7 +214,7 @@ export default function MedicationDetailPage({
       </div>
 
       {/* Actions */}
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Link
           href={`/pharmacies?medicationId=${entry.id}`}
           className="flex-1 text-center py-3 rounded-xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"

@@ -1,12 +1,12 @@
 import AuthCard from '@/components/auth/AuthCard';
 import AuthLogo from '@/components/auth/AuthLogo';
-import LoginForm from '@/components/auth/LoginForm';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
-export default function LoginPage() {
+export default function ForgotPasswordPage() {
   return (
     <AuthCard>
       <AuthLogo />
-      <LoginForm />
+      <ForgotPasswordForm />
     </AuthCard>
   );
 }

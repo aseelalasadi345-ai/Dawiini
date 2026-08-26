@@ -1,6 +1,6 @@
 import { Link } from "@/i18n/navigation";
 import { getTranslations, getFormatter } from "next-intl/server";
-import TodayDosesWidget from "./TodayDosesWidget";
+import TodayDosesWidget from "../TodayDosesWidget";
 import { todayDoses } from "@/lib/mock/doses";
 
 const recentSearches = [
@@ -53,7 +53,7 @@ export default async function HomePage() {
       </Link>
 
       {/* Quick actions */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <Link
           href="/search/scan"
           className="bg-white border border-border rounded-xl shadow-sm transition-all hover:border-hover-border hover:shadow-md active:scale-[0.99] p-5 flex items-center gap-4"

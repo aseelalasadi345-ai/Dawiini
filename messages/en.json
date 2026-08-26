@@ -2,14 +2,18 @@
   "navbar": {
     "home": "Home",
     "search": "Search",
-    "my-medication" : "My Medications",
+    "my-medication": "My Medications",
     "pharmacies": "Pharmacies",
     "notifications": "Notifications",
-    "profile": "Profile"
+    "profile": "Profile",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
-
   "home": {
     "greeting": "Good morning, {name}",
+    "greetingMorning": "Good morning, {name}",
+    "greetingAfternoon": "Good afternoon, {name}",
+    "greetingEvening": "Good evening, {name}",
     "searchPlaceholder": "Search for a medication…",
     "scanPrescription": "Scan Prescription",
     "scanPrescriptionSub": "Upload or camera",
@@ -21,7 +25,6 @@
     "take": "Take",
     "snooze": "Snooze"
   },
-  
   "today": {
     "title": "Today",
     "take": "Take",
@@ -30,7 +33,6 @@
     "taken": "Taken",
     "skipped": "Skipped"
   },
-
   "notifications": {
     "title": "Notifications",
     "markAllRead": "Mark all read",
@@ -63,7 +65,6 @@
       }
     }
   },
-
   "profile": {
     "tabs": {
       "personalInfo": "Personal Info",
@@ -98,14 +99,11 @@
       "logout": "Log out"
     }
   },
-
   "medicationTabs": {
     "today": "Today",
     "medications": "Medications",
     "saved": "Saved"
   },
-
-  
   "medicationCardMenu": {
     "openMenu": "Open menu",
     "edit": "Edit",
@@ -117,20 +115,17 @@
     "cancel": "Cancel",
     "confirmDelete": "Delete"
   },
-
   "medications": {
     "title": "My Medications",
     "add": "Add",
     "since": "Since",
     "empty": "You haven't added any medications yet."
   },
-
   "saved": {
     "empty": "No saved medications yet.",
     "view": "View",
     "unsave": "Remove from saved"
   },
-
   "medicationDetail": {
     "back": "Back",
     "backToResults": "Back to results",
@@ -151,7 +146,6 @@
     "saved": "Saved",
     "notFound": "Medication not found."
   },
-
   "setReminder": {
     "title": "Set Reminder",
     "addTime": "Add time",
@@ -159,7 +153,6 @@
     "save": "Save",
     "close": "Close"
   },
-
   "pharmacies": {
     "title": "Nearby Pharmacies",
     "subtitle": "Browse pharmacies near you.",
@@ -188,7 +181,6 @@
       "here": "You are here"
     }
   },
-
   "pharmacyDetail": {
     "back": "Back to pharmacies",
     "notFound": "Pharmacy not found.",
@@ -199,21 +191,18 @@
     "limited": "Limited",
     "outOfStock": "Out of stock"
   },
-
   "search": {
     "title": "Search",
     "scanPrescription": "Scan Prescription",
     "scanPrescriptionSub": "Upload or camera",
     "browseCatalog": "Browse Medications"
   },
-
   "medicationSearch": {
     "placeholder": "Search for a medication…",
     "clear": "Clear search",
     "noResults": "No medications found — try a different search term.",
     "matchesIngredient": "Contains: {ingredient}"
   },
-
   "mophDrugDetail": {
     "back": "Back",
     "notFound": "Medication not found.",
@@ -223,7 +212,6 @@
     "price": "Price",
     "viewOnMoph": "View on MOPH National Drugs Database"
   },
-
   "scan": {
     "title": "Scan Prescription",
     "subtitle": "Upload your prescription to auto-detect your medications.",
@@ -255,13 +243,14 @@
     "addAllToSchedule": "Add all to schedule",
     "noMedicationsLeft": "No medications left to confirm."
   },
-
   "auth": {
     "login": {
       "title": "Welcome back",
       "subtitle": "Log in to your Dawiini account.",
       "identifierLabel": "Email or phone number",
       "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
+      "emailLabel": "Email",
+      "emailPlaceholder": "sara@example.com",
       "passwordLabel": "Password",
       "forgotPassword": "Forgot password?",
       "rememberMe": "Remember me",
@@ -270,17 +259,54 @@
       "orContinueWith": "or continue with",
       "continueWithGoogle": "Continue with Google",
       "noAccount": "Don't have an account?",
-      "signUp": "Sign up"
+      "signUp": "Sign up",
+      "signUpLink": "Sign up"
     },
-
-    
+    "forgotPassword": {
+      "backToLogin": "Back to login",
+      "title": "Forgot password?",
+      "subtitle": "No worries. Enter your email and we'll send a reset link.",
+      "emailLabel": "Email",
+      "emailPlaceholder": "sara@example.com",
+      "submit": "Send reset link",
+      "submitting": "Sending...",
+      "successTitle": "Check your email",
+      "successMessage": "If an account exists with this email, we've sent a link to reset your password."
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Start managing your health today.",
+      "firstNameLabel": "First name",
+      "firstNamePlaceholder": "Sara",
+      "lastNameLabel": "Last name",
+      "lastNamePlaceholder": "Al-Ahmad",
+      "emailLabel": "Email",
+      "emailPlaceholder": "sara@example.com",
+      "passwordLabel": "Password",
+      "passwordHint": "Minimum 8 characters, including a number.",
+      "confirmPasswordLabel": "Confirm password",
+      "agreeText": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "submit": "Create account",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Log in",
+      "submitting": "Creating account..."
+    },
     "errors": {
       "identifierRequired": "This field is required",
       "identifierInvalid": "Enter a valid email or phone number",
-      "passwordTooShort": "Password must be at least 6 characters"
+      "nameRequired": "This field is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "confirmPasswordRequired": "Please confirm your password",
+      "passwordMismatch": "Passwords do not match",
+      "loginFailed": "Incorrect email or password"
     }
   },
-
   "addMedication": {
     "prefilledFromScan": "Prefilled from your scanned prescription — please review before saving.",
     "prefilledFromScanMultiple": "Prefilled from your scanned prescription — please review before saving. {count} more detected medication(s) can be added the same way, one at a time.",
@@ -296,5 +322,152 @@
     "saveChanges": "Save Changes",
     "editTitle": "Edit Medication",
     "saving": "Saving..."
+  },
+  "nav": {
+    "howItWorks": "How It Works",
+    "langSwitch": "عربي",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "hero": {
+    "badge": "Now available in Lebanon",
+    "titleLine1": "Find your medication,",
+    "titleLine2": "find your pharmacy.",
+    "subtitle": "Dawiini helps you locate medications, check pharmacy availability, and manage your health—all in one place.",
+    "getStarted": "Get Started",
+    "watchDemo": "Watch demo",
+    "trust": "50,000+ patients trust Dawiini",
+    "searchPlaceholder": "Paracetamol 500mg",
+    "nearbyPharmacies": "Nearby Pharmacies",
+    "inStockBadge": "In Stock",
+    "updated": "Updated 12m ago",
+    "doseTitle": "Dose due",
+    "doseTime": "in 45 minutes",
+    "getDirections": "Get Directions",
+    "pharmacies": {
+      "alDawaa": "Al Dawaa",
+      "nahdi": "Nahdi",
+      "rayi": "Rayi"
+    },
+    "inStock": "In stock",
+    "outOfStock": "Out"
+  },
+  "features": {
+    "title": "Everything you need",
+    "subtitle": "Built for patients who want clarity and convenience.",
+    "items": {
+      "availability": {
+        "title": "Real-Time Availability",
+        "description": "Know before you go. See live stock status at pharmacies near you."
+      },
+      "scanner": {
+        "title": "Prescription Scanner",
+        "description": "Upload or photograph your prescription to find all your medications at once."
+      },
+      "reminders": {
+        "title": "Dose Reminders",
+        "description": "Never miss a dose. Set reminders tailored to your schedule."
+      },
+      "bilingual": {
+        "title": "Bilingual Support",
+        "description": "Full Arabic and English support with RTL layout throughout."
+      }
+    }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "steps": {
+      "search": {
+        "title": "Search or Scan",
+        "description": "Enter a medication name or scan your prescription."
+      },
+      "availability": {
+        "title": "See Availability",
+        "description": "Instantly check which pharmacies near you have it in stock."
+      },
+      "pharmacy": {
+        "title": "Go to Pharmacy",
+        "description": "Get directions, call ahead, and pick up your medication."
+      }
+    },
+    "cta": "Get Started"
+  },
+  "footer": {
+    "disclaimer": "Information is for reference only and does not constitute medical advice.",
+    "copyright": "© 2025 Dawiini. All rights reserved.",
+    "staffPortal": "Staff portal"
+  },
+  "appNav": {
+    "home": "Home",
+    "search": "Search",
+    "myMedications": "My Medications",
+    "pharmacies": "Pharmacies"
+  },
+  "onboarding": {
+    "skipAll": "Skip all",
+    "skipThisStep": "Skip this step",
+    "stepOf": "Step {step} of {total}",
+    "language": {
+      "title": "Choose your language",
+      "subtitle": "Dawiini is fully available in English and Arabic. You can change this any time in settings.",
+      "english": "English",
+      "arabic": "العربية",
+      "selected": "Selected",
+      "continue": "Continue"
+    },
+    "location": {
+      "title": "Find pharmacies near you",
+      "subtitle": "Allow location access so Dawiini can show pharmacies and availability in your area.",
+      "allowTitle": "Allow location",
+      "allowSubtitle": "While using the app",
+      "enabledTitle": "Location enabled",
+      "enabledSubtitle": "Riyadh, Saudi Arabia",
+      "privacyNote": "Your location is only used to find nearby pharmacies and is never sold or shared.",
+      "continue": "Continue"
+    },
+    "notifications": {
+      "title": "Never miss a dose",
+      "subtitle": "Enable notifications to get timely reminders for your medications and pharmacy stock alerts.",
+      "allowTitle": "Allow notifications",
+      "allowSubtitle": "Dose reminders & stock alerts",
+      "enabledTitle": "Notifications enabled",
+      "enabledSubtitle": "You'll be notified for dose reminders",
+      "sample1": "Omeprazole 20mg due in 30 minutes",
+      "sample2": "Metformin back in stock at Nahdi",
+      "letsGo": "Let's go"
+    }
+  },
+  "notificationsPage": {
+    "title": "Notifications",
+    "markAllRead": "Mark all read",
+    "items": {
+      "doseReminder": {
+        "title": "Dose reminder",
+        "description": "Time to take Omeprazole 20mg",
+        "time": "10 minutes ago"
+      },
+      "backInStock": {
+        "title": "Back in stock",
+        "description": "Amoxicillin 500mg is now available at Al Dawaa.",
+        "time": "1 hour ago"
+      },
+      "morningDoseTaken": {
+        "title": "Morning dose taken",
+        "description": "You marked Metformin 850mg as taken at 08:04 AM.",
+        "time": "4 hours ago"
+      },
+      "refillNeeded": {
+        "title": "Refill needed",
+        "description": "You have 5 doses of Atorvastatin remaining.",
+        "time": "Yesterday"
+      },
+      "availabilityUpdate": {
+        "title": "Availability update",
+        "description": "Paracetamol 1000mg stock is limited at United Pharmacy.",
+        "time": "2 days ago"
+      }
+    }
   }
 }

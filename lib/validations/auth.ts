@@ -1,17 +1,37 @@
 import { z } from "zod";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const emailSchema = z
+  .string()
+  .min(1, "emailRequired")
+  .regex(EMAIL_REGEX, "emailInvalid");
+
 export const loginSchema = z.object({
-  identifier: z
-    .string()
-    .min(1, "identifierRequired")
-    .refine(
-      (val) =>
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) || // email
-        /^\+?[0-9\s]{7,15}$/.test(val), // phone
-      { message: "identifierInvalid" }
-    ),
-  password: z.string().min(6, "passwordTooShort"),
+  email: emailSchema,
+  password: z.string().min(1, "passwordRequired"),
   rememberMe: z.boolean().optional(),
 });
 
-export type LoginFormData = z.infer<typeof loginSchema>;
+export type LoginFormValues = z.infer<typeof loginSchema>;
+
+export const signupSchema = z
+  .object({
+    firstName: z.string().trim().min(1, "nameRequired"),
+    lastName: z.string().trim().min(1, "nameRequired"),
+    email: emailSchema,
+    password: z.string().min(8, "passwordTooShort"),
+    confirmPassword: z.string().min(1, "confirmPasswordRequired"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "passwordMismatch",
+    path: ["confirmPassword"],
+  });
+
+export type SignupFormValues = z.infer<typeof signupSchema>;
+
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+});
+
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
