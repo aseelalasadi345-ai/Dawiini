@@ -1,0 +1,194 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: npx create-db
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Frequency {
+  once_daily
+  twice_daily
+  three_times_daily
+  as_needed
+  weekly
+}
+enum DoseStatus {
+  pending
+  taken
+  skipped
+}
+
+enum PharmacyAvailabilityLevel {
+  plenty
+  limited
+  out_of_stock
+}
+
+// ─────────────────────────────────────────────────────────────
+// Users & auth (see lib/validations/auth.ts)
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  medications      Medication[]
+  savedMedications SavedMedication[]
+}
+
+// ─────────────────────────────────────────────────────────────
+// A user's own active regimen (lib/types.ts: Medication, Dose)
+// ─────────────────────────────────────────────────────────────
+
+model Medication {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name      String
+  dose      String // e.g. "850mg" — kept as free text to match the form's DOSAGE_REGEX input
+  frequency Frequency
+  times     String[] // e.g. ["08:00", "20:00"] — count must match REQUIRED_TIME_COUNT[frequency]
+  startDate DateTime  @db.Date
+  endDate   DateTime? @db.Date
+  notes     String?
+
+  doses Dose[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Individual scheduled/logged dose instances for a medication
+model Dose {
+  id           String     @id @default(cuid())
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  date    DateTime   @db.Date // day this dose belongs to
+  time    String // e.g. "08:00", mirrors Medication.times entries
+  status  DoseStatus @default(pending)
+  takenAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([medicationId, date, time])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Drug reference catalog — merges the MOPH scrape (data/medications.json:
+// name, nameAr, form, strength, atcCode, bg, ingredients, price, sourceUrl)
+// with the richer display fields lib/types.ts:MedicationCatalogEntry expects
+// (genericName, brand, useCase, categories, description, disclaimer).
+// The scrape fields are populated by the import script; the display fields
+// are currently curated/mocked and may be null until backfilled.
+// ─────────────────────────────────────────────────────────────
+
+model MedicationCatalogEntry {
+  id String @id @default(cuid())
+
+  // --- from data/medications.json (MOPH scrape) ---
+  name        String // scraped "name", e.g. brand/product name as listed by MOPH
+  nameAr      String?
+  form        String // e.g. "Injectable solution" — MOPH's single form per listing
+  strength    String // e.g. "0.45%" or "250mg"
+  atcCode     String?
+  bg          String? // MOPH brand/generic marker ("B" / "G")
+  ingredients String?
+  price       String? // kept as scraped string, e.g. "176,974 L.L" (mixed currency formatting)
+  sourceUrl   String?
+
+  // --- curated/display fields (lib/types.ts) ---
+  genericName String?
+  brand       String?
+  useCase     String?
+  categories  String[]
+  description String?
+  disclaimer  String?
+
+  savedBy       SavedMedication[]
+  pharmacyStock PharmacyMedicationAvailability[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([atcCode])
+}
+
+// Bookmarked catalog entries, shown on the Saved tab
+model SavedMedication {
+  id             String                 @id @default(cuid())
+  userId         String
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catalogEntryId String
+  catalogEntry   MedicationCatalogEntry @relation(fields: [catalogEntryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, catalogEntryId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Pharmacies (lib/types.ts: Pharmacy, PharmacyHours, PharmacyMedicationAvailability)
+// Note: distanceKm, isOpen, and updatedMinutesAgo in the frontend types are
+// derived at query time (from lat/lng + user location, hours, and updatedAt
+// respectively) rather than stored columns.
+// ─────────────────────────────────────────────────────────────
+
+model Pharmacy {
+  id          String  @id @default(cuid())
+  name        String
+  address     String
+  phone       String
+  latitude    Float?
+  longitude   Float?
+  is24Hours   Boolean @default(false)
+  opensAt     String? // e.g. "8:00 AM" — unused when is24Hours is true
+  openUntil   String? // e.g. "11 PM" — unused when is24Hours is true
+  mapUrl      String? // Google Maps (or any map) link to this pharmacy
+  rating      Float   @default(0)
+  reviewCount Int     @default(0)
+
+  hours        PharmacyHours[]
+  availability PharmacyMedicationAvailability[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PharmacyHours {
+  id         String   @id @default(cuid())
+  pharmacyId String
+  pharmacy   Pharmacy @relation(fields: [pharmacyId], references: [id], onDelete: Cascade)
+
+  days  String // e.g. "Saturday – Thursday"
+  hours String // e.g. "8:00 AM – 11:00 PM"
+}
+
+// Per-pharmacy stock level for a catalog entry
+model PharmacyMedicationAvailability {
+  id             String                 @id @default(cuid())
+  pharmacyId     String
+  pharmacy       Pharmacy               @relation(fields: [pharmacyId], references: [id], onDelete: Cascade)
+  catalogEntryId String
+  catalogEntry   MedicationCatalogEntry @relation(fields: [catalogEntryId], references: [id], onDelete: Cascade)
+
+  level     PharmacyAvailabilityLevel @default(out_of_stock)
+  updatedAt DateTime                  @updatedAt
+
+  @@unique([pharmacyId, catalogEntryId])
+}
+

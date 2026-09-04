@@ -159,6 +159,25 @@
       }
     }
   },
+  "admin": {
+    "title": "إضافة صيدلية جديدة",
+    "subtitle": "سجّل صيدلية حتى يتمكن المرضى من العثور عليها في دوائيني.",
+    "nameLabel": "اسم الصيدلية",
+    "namePlaceholder": "صيدلية الدواء",
+    "addressLabel": "الموقع / العنوان",
+    "addressPlaceholder": "طريق الملك فهد، الرياض",
+    "phoneLabel": "رقم الهاتف",
+    "phonePlaceholder": "5X XXX XXXX 966+",
+    "open24Label": "مفتوح 24 ساعة",
+    "opensAtLabel": "يفتح الساعة",
+    "opensAtPlaceholder": "8:00 صباحًا",
+    "closesAtLabel": "يغلق الساعة",
+    "closesAtPlaceholder": "11:00 مساءً",
+    "mapUrlLabel": "رابط الخريطة (جوجل مابس أو غيره)",
+    "mapUrlPlaceholder": "https://maps.google.com/...",
+    "submit": "إضافة الصيدلية",
+    "successMessage": "تمت إضافة الصيدلية بنجاح."
+  },
   "auth": {
     "login": {
       "title": "مرحبًا بعودتك",
@@ -204,4 +223,5 @@
     }
   }
 }
+
 

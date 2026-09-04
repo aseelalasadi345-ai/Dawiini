@@ -159,6 +159,25 @@
       }
     }
   },
+  "admin": {
+    "title": "Add a New Pharmacy",
+    "subtitle": "Register a pharmacy so patients can find it on Dawiini.",
+    "nameLabel": "Pharmacy name",
+    "namePlaceholder": "Al Dawaa Pharmacy",
+    "addressLabel": "Location / address",
+    "addressPlaceholder": "King Fahd Road, Riyadh",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+966 5X XXX XXXX",
+    "open24Label": "Open 24 hours",
+    "opensAtLabel": "Opens at",
+    "opensAtPlaceholder": "8:00 AM",
+    "closesAtLabel": "Closes at",
+    "closesAtPlaceholder": "11:00 PM",
+    "mapUrlLabel": "Map link (Google Maps or similar)",
+    "mapUrlPlaceholder": "https://maps.google.com/...",
+    "submit": "Add Pharmacy",
+    "successMessage": "Pharmacy added successfully."
+  },
   "auth": {
     "login": {
       "title": "Welcome back",
@@ -204,3 +223,4 @@
     }
   }
 }
+
