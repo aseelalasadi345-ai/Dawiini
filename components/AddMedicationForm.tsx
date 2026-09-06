@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect } from "react";
+import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
-import { useRouter } from "@/i18n/navigation";
 import {
   medicationFormSchema,
   MedicationFormValues,
@@ -13,35 +12,45 @@ import {
   REQUIRED_TIME_COUNT,
   defaultTimesFor,
 } from "@/lib/schemas/medication";
-import { Medication } from "@/lib/types";
-import { formValuesToMedication } from "@/lib/mappers/medication";
 
 interface MedicationFormProps {
   mode?: "add" | "edit";
-  medicationId?: string;
   initialData?: MedicationFormValues;
-  onSuccess?: (medication: Medication) => void; // called after save with the resulting medication
+  isSubmitting: boolean;
+  error?: string | null;
+  onSubmit: (values: MedicationFormValues) => void;
 }
 
+// Presentational only — no axios/mutation calls in here. Owns local field
+// state (via react-hook-form) and client-side validation, and calls
+// onSubmit(values) on submit; it has no idea what happens to that data
+// afterward. Shared by two callers: add/page.tsx (the real, backend-wired
+// "Add Medication" flow this task covers) and EditMedicationModal.tsx
+// (still a local-only mock edit flow, out of scope here) — both now supply
+// isSubmitting/error/onSubmit themselves rather than this form owning any
+// of that.
 export default function AddMedicationForm({
   mode = "add",
-  medicationId,
   initialData,
-  onSuccess,
+  isSubmitting,
+  error,
+  onSubmit,
 }: MedicationFormProps) {
   const t = useTranslations("addMedication");
-  const router = useRouter();
-  const [serverError, setServerError] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     control,
-    watch,
     setValue,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<MedicationFormValues>({
+    // Pre-existing `as any`, left as-is (not the lint issue this task named,
+    // and not a quick fix): medicationFormSchema's `times: z.array(...).default([])`
+    // makes zodResolver's inferred input/output types diverge in a way TS can't
+    // reconcile with useForm<MedicationFormValues>'s Resolver type. Confirmed by
+    // actually removing this cast — it produces two real type errors.
     resolver: zodResolver(medicationFormSchema) as any,
     defaultValues: initialData ?? {
       medicationName: "",
@@ -59,8 +68,13 @@ export default function AddMedicationForm({
     if (initialData) reset(initialData);
   }, [initialData, reset]);
 
-  const frequency = watch("frequency");
-  const times = watch("times") ?? [];
+  // useWatch instead of methods.watch() — the latter tripped the
+  // react-hooks/incompatible-library lint warning (React Compiler can't
+  // safely memoize a component using useForm().watch()); useWatch is
+  // react-hook-form's own hook-based subscription and doesn't have that
+  // problem.
+  const frequency = useWatch({ control, name: "frequency" });
+  const times = useWatch({ control, name: "times" }) ?? [];
   const requiredCount = REQUIRED_TIME_COUNT[frequency];
 
   function addTime() {
@@ -80,35 +94,15 @@ export default function AddMedicationForm({
     setValue("times", next);
   }
 
-  async function onSubmit(values: MedicationFormValues) {
-    setServerError(null);
-    try {
-      const id = mode === "edit" ? medicationId! : crypto.randomUUID();
-      const medication = formValuesToMedication(values, id);
-
-      onSuccess?.(medication);
-
-      if (mode === "add") {
-        router.push("/medications");
-      }
-    } catch (err) {
-      setServerError(
-        err instanceof Error
-          ? err.message
-          : "Something went wrong. Please try again.",
-      );
-    }
-  }
-
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       className="flex flex-col gap-5"
     >
-      {serverError && (
+      {error && (
         <div className="rounded-md bg-danger-light border border-danger-light-border text-danger-strong text-sm px-4 py-3">
-          {serverError}
+          {error}
         </div>
       )}
 

@@ -20,8 +20,12 @@ export const signupSchema = z
     firstName: z.string().trim().min(1, "nameRequired"),
     lastName: z.string().trim().min(1, "nameRequired"),
     email: emailSchema,
-    password: z.string().min(8, "passwordTooShort"),
+    // Matches the UI's own stated rule (passwordHint: "Minimum 8 characters,
+    // including a number.") — two separate checks so each shows its own
+    // message rather than one generic "invalid password".
+    password: z.string().min(8, "passwordTooShort").regex(/\d/, "passwordNeedsNumber"),
     confirmPassword: z.string().min(1, "confirmPasswordRequired"),
+    agreeToTerms: z.boolean().refine((v) => v === true, { message: "agreeRequired" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "passwordMismatch",
@@ -35,3 +39,19 @@ export const forgotPasswordSchema = z.object({
 });
 
 export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+
+// Same password rule as signupSchema above (min 8 chars + a number), reusing
+// the same "passwordTooShort"/"passwordNeedsNumber"/"confirmPasswordRequired"/
+// "passwordMismatch" error keys — a reset password isn't held to a different
+// standard than a signup one.
+export const resetPasswordSchema = z
+  .object({
+    password: z.string().min(8, "passwordTooShort").regex(/\d/, "passwordNeedsNumber"),
+    confirmPassword: z.string().min(1, "confirmPasswordRequired"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "passwordMismatch",
+    path: ["confirmPassword"],
+  });
+
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

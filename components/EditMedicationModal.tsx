@@ -5,17 +5,28 @@ import { useTranslations } from "next-intl";
 import AddMedicationForm from "./AddMedicationForm";
 import { Medication } from "@/lib/types";
 import { medicationToFormValues } from "@/lib/mappers/medication";
+import type { MedicationFormValues } from "@/lib/schemas/medication";
 
 interface EditMedicationModalProps {
   medication: Medication;
+  isSubmitting: boolean;
+  error?: string | null;
   onClose: () => void;
-  onSaved: (updated: Medication) => void;
+  onSubmit: (values: MedicationFormValues) => void;
 }
 
+// Now backend-wired: medications/page.tsx owns the useUpdateMedication
+// mutation (PATCH /api/medications/[id]) and passes isSubmitting/error/
+// onSubmit straight through, same as add/page.tsx does for AddMedicationForm
+// directly. This modal no longer synthesizes a Medication client-side
+// (formValuesToMedication is gone) — the server's response is the source of
+// truth, surfaced via the page's ["myMedications"] query refetch.
 export default function EditMedicationModal({
   medication,
+  isSubmitting,
+  error,
   onClose,
-  onSaved,
+  onSubmit,
 }: EditMedicationModalProps) {
   const t = useTranslations("addMedication");
 
@@ -43,9 +54,10 @@ export default function EditMedicationModal({
 
         <AddMedicationForm
           mode="edit"
-          medicationId={medication.id}
           initialData={medicationToFormValues(medication)}
-          onSuccess={(updated) => onSaved(updated)}
+          isSubmitting={isSubmitting}
+          error={error}
+          onSubmit={onSubmit}
         />
       </div>
     </div>

@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 :root {
+  /* Fonts — self-hosted via @fontsource (see app/[locale]/layout.tsx's
+     imports) rather than next/font/google, whose dev-mode font fetch
+     depends on live network access to fonts.gstatic.com; that CDN proved
+     unreliable in this environment, so the actual font files ship in
+     node_modules instead of being fetched at request time. */
+  --font-en: "Inter", sans-serif;
+  --font-ar: "IBM Plex Sans Arabic", sans-serif;
+
   /* Backgrounds */
   --background: #F7F9FC;
   --surface: #ffffff;
@@ -48,9 +56,6 @@
   --warning-light-strong: #FEF3C6; /* amber-100 — icon circle backgrounds */
   --warning-light-border: #FEE685; /* amber-200 — tinted borders */
 
-  /* Star rating fill — decorative, deliberately distinct from --warning */
-  --rating: #FCBB00; /* amber-400 */
-
   /* Radius (used a lot: rounded-xl / rounded-2xl) */
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -95,7 +100,6 @@
   --color-warning-light: var(--warning-light);
   --color-warning-light-strong: var(--warning-light-strong);
   --color-warning-light-border: var(--warning-light-border);
-  --color-rating: var(--rating);
   --color-brand-navy: var(--brand-navy);
   --color-brand-blue: var(--brand-blue);
   --color-brand-teal: var(--brand-teal);

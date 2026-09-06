@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   AlarmClock,
   AlertTriangle,
@@ -9,37 +8,33 @@ import {
   Pill,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { formatRelativeTime } from "@/lib/date";
 import {
-  notifications as initialNotifications,
-  NotificationCategory,
-} from "@/lib/mock/notifications";
+  useNotifications,
+  useMarkAllNotificationsRead,
+  useMarkNotificationRead,
+} from "@/hooks/useNotifications";
+import type { INotification } from "@/interfaces/interfaces";
 
 const ICON_STYLES: Record<
-  NotificationCategory,
+  INotification["type"],
   { Icon: typeof AlarmClock; bg: string; text: string }
 > = {
-  doseReminder: { Icon: AlarmClock, bg: "bg-danger-light", text: "text-danger" },
-  backInStock: { Icon: CheckCircle2, bg: "bg-success-light", text: "text-success" },
-  doseTaken: { Icon: Pill, bg: "bg-danger-light", text: "text-danger" },
-  refillNeeded: { Icon: AlertTriangle, bg: "bg-warning-light", text: "text-warning" },
-  availabilityUpdate: { Icon: Package, bg: "bg-warning-light", text: "text-warning-strong" },
+  dose_reminder: { Icon: AlarmClock, bg: "bg-danger-light", text: "text-danger" },
+  back_in_stock: { Icon: CheckCircle2, bg: "bg-success-light", text: "text-success" },
+  dose_taken: { Icon: Pill, bg: "bg-danger-light", text: "text-danger" },
+  refill_needed: { Icon: AlertTriangle, bg: "bg-warning-light", text: "text-warning" },
+  availability_update: { Icon: Package, bg: "bg-warning-light", text: "text-warning-strong" },
 };
 
 export default function NotificationsPage() {
   const t = useTranslations("notifications");
-  const [items, setItems] = useState(initialNotifications);
+  const { data: response, isLoading } = useNotifications();
+  const markAllRead = useMarkAllNotificationsRead();
+  const markRead = useMarkNotificationRead();
 
-  const hasUnread = items.some((n) => n.unread);
-
-  function markAllRead() {
-    setItems((prev) => prev.map((n) => ({ ...n, unread: false })));
-  }
-
-  function markRead(id: string) {
-    setItems((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, unread: false } : n)),
-    );
-  }
+  const items = response?.data ?? [];
+  const hasUnread = items.some((n) => !n.read);
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
@@ -47,27 +42,29 @@ export default function NotificationsPage() {
         <h1 className="text-2xl font-bold text-foreground">{t("title")}</h1>
         <button
           type="button"
-          onClick={markAllRead}
-          disabled={!hasUnread}
+          onClick={() => markAllRead.mutate()}
+          disabled={!hasUnread || markAllRead.isPending}
           className="text-sm font-medium text-primary hover:underline disabled:text-muted disabled:no-underline disabled:cursor-default"
         >
           {t("markAllRead")}
         </button>
       </div>
 
-      {items.length === 0 ? (
+      {isLoading ? (
+        <p className="text-sm text-muted text-center py-10">{t("loading")}</p>
+      ) : items.length === 0 ? (
         <p className="text-sm text-muted text-center py-10">{t("empty")}</p>
       ) : (
         <div className="flex flex-col gap-3">
           {items.map((n) => {
-            const { Icon, bg, text } = ICON_STYLES[n.category];
+            const { Icon, bg, text } = ICON_STYLES[n.type];
             return (
               <button
                 key={n.id}
                 type="button"
-                onClick={() => markRead(n.id)}
+                onClick={() => !n.read && markRead.mutate(n.id)}
                 className={`w-full text-start flex items-start gap-3 p-4 rounded-xl border transition-all active:scale-[0.99] ${
-                  n.unread
+                  !n.read
                     ? "border-hover-border bg-primary-light hover:bg-primary-light/70"
                     : "border-border bg-surface hover:bg-background"
                 }`}
@@ -80,17 +77,17 @@ export default function NotificationsPage() {
                 <span className="flex-1 min-w-0">
                   <span className="flex items-center gap-1.5">
                     <span className="text-sm font-semibold text-foreground">
-                      {t(`items.${n.category}.title`)}
+                      {n.title}
                     </span>
-                    {n.unread && (
+                    {!n.read && (
                       <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                     )}
                   </span>
                   <span className="block text-sm text-muted mt-0.5">
-                    {t(`items.${n.category}.body`)}
+                    {n.message}
                   </span>
                   <span className="block text-xs text-muted mt-1.5">
-                    {t(`items.${n.category}.time`)}
+                    {formatRelativeTime(new Date(n.createdAt))}
                   </span>
                 </span>
               </button>

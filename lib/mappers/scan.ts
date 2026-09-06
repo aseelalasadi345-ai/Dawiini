@@ -3,7 +3,7 @@ import {
   MedicationFormValues,
   defaultTimesFor,
 } from "@/lib/schemas/medication";
-import { ScannedMedication } from "@/lib/mock/scanResults";
+import { ScannedMedication } from "@/lib/scan";
 
 function guessFrequency(text: string): Frequency {
   const normalized = text.toLowerCase();

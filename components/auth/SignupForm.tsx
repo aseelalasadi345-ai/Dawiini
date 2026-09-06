@@ -5,32 +5,59 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
-import { Link, useRouter } from '@/i18n/routing';
+import { Link } from '@/i18n/routing';
 import { signupSchema, type SignupFormValues } from '@/lib/validations/auth';
-import { signup } from '@/lib/auth/mockAuth';
 import FieldError from './FieldError';
 
-export default function SignupForm() {
+// The only fields the backend actually receives — confirmPassword and
+// agreeToTerms exist purely for this form's own client-side validation and
+// never leave it.
+export type SignupSubmitValues = Pick<SignupFormValues, 'firstName' | 'lastName' | 'email' | 'password'>;
+
+interface SignupFormProps {
+  isSubmitting: boolean;
+  error?: string | null;
+  onSubmit: (values: SignupSubmitValues) => void;
+}
+
+// Presentational only — no axios/Supabase/mutation calls in here. Owns
+// local field state (via react-hook-form) and client-side validation, and
+// calls onSubmit(values) on submit; it has no idea what happens to that
+// data afterward (see signup/page.tsx, which owns the actual signup
+// mutation and decides what to do with the result).
+export default function SignupForm({ isSubmitting, error, onSubmit }: SignupFormProps) {
   const t = useTranslations('auth.signup');
   const tErrors = useTranslations('auth.errors');
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isValid },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
-    mode: 'onBlur',
-    defaultValues: { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' },
+    // onChange (not the rest of the app's usual onBlur) so `isValid` is
+    // live and accurate — needed to disable the submit button until the
+    // form actually is valid.
+    mode: 'onChange',
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      agreeToTerms: false,
+    },
   });
 
-  const onSubmit = async (data: SignupFormValues) => {
-    // TODO: replace with the real signup API call.
-    await signup(data);
-    router.push('/onboarding?step=1');
+  const submit = (data: SignupFormValues) => {
+    onSubmit({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+    });
   };
 
   return (
@@ -38,7 +65,16 @@ export default function SignupForm() {
       <h1 className="text-center text-2xl font-bold text-brand-navy">{t('title')}</h1>
       <p className="mt-2 text-center text-sm text-brand-ink">{t('subtitle')}</p>
 
-      <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit(submit)} noValidate>
+        {error && (
+          <p
+            className="rounded-xl border border-danger-light-border bg-danger-light px-4 py-2.5 text-sm text-danger-strong"
+            role="alert"
+          >
+            {error}
+          </p>
+        )}
+
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="firstName" className="mb-1.5 block text-sm font-semibold text-brand-navy">
@@ -137,27 +173,32 @@ export default function SignupForm() {
           <FieldError message={errors.confirmPassword?.message && tErrors(errors.confirmPassword.message)} />
         </div>
 
-        <label className="flex items-start gap-2 text-sm text-brand-ink">
-          <input
-            type="checkbox"
-            className="mt-0.5 h-4 w-4 rounded border-brand-border text-brand-blue focus:ring-brand-blue"
-          />
-          <span>
-            {t('agreeText')}{' '}
-            <a href="/terms" className="font-medium text-brand-blue hover:underline">
-              {t('termsOfService')}
-            </a>{' '}
-            {t('and')}{' '}
-            <a href="/privacy" className="font-medium text-brand-blue hover:underline">
-              {t('privacyPolicy')}
-            </a>
-            .
-          </span>
-        </label>
+        <div>
+          <label className="flex items-start gap-2 text-sm text-brand-ink">
+            <input
+              type="checkbox"
+              aria-invalid={!!errors.agreeToTerms}
+              className="mt-0.5 h-4 w-4 rounded border-brand-border text-brand-blue focus:ring-brand-blue"
+              {...register('agreeToTerms')}
+            />
+            <span>
+              {t('agreeText')}{' '}
+              <a href="/terms" className="font-medium text-brand-blue hover:underline">
+                {t('termsOfService')}
+              </a>{' '}
+              {t('and')}{' '}
+              <a href="/privacy" className="font-medium text-brand-blue hover:underline">
+                {t('privacyPolicy')}
+              </a>
+              .
+            </span>
+          </label>
+          <FieldError message={errors.agreeToTerms?.message && tErrors(errors.agreeToTerms.message)} />
+        </div>
 
         <button
           type="submit"
-          disabled={isSubmitting}
+          disabled={!isValid || isSubmitting}
           className="w-full rounded-xl bg-brand-gradient py-3 text-sm font-semibold text-white shadow-md hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:opacity-50"
         >
           {isSubmitting ? t('submitting') : t('submit')}

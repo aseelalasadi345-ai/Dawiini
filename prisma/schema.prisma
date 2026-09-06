@@ -1,0 +1,364 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Frequency {
+  once_daily
+  twice_daily
+  three_times_daily
+  as_needed
+  weekly
+}
+
+enum DoseStatus {
+  pending
+  taken
+  skipped
+}
+
+enum PharmacyAvailabilityLevel {
+  plenty
+  limited
+  out_of_stock
+}
+
+// Lowercase values to match this schema's existing enum convention
+// (Frequency, DoseStatus, PharmacyAvailabilityLevel are all lowercase) —
+// the admin feature that asked for this only needs "is this user an admin",
+// not a specific casing.
+enum Role {
+  user
+  admin
+}
+
+// dose_reminder/dose_taken/refill_needed all have real triggers (see
+// app/api/notifications/route.ts, app/api/schedule/doses/[id]/route.ts,
+// app/api/schedule/doses/log-as-needed/route.ts). back_in_stock and
+// availability_update exist here so the model/UI can render them later, but
+// nothing creates them yet — same reason PharmacyMedicationAvailability has
+// no admin/manual-entry path: there's no real pharmacy-inventory feed to
+// source them from. Don't wire a trigger for either until that exists.
+enum NotificationType {
+  dose_reminder
+  dose_taken
+  refill_needed
+  back_in_stock
+  availability_update
+}
+
+// ─────────────────────────────────────────────────────────────
+// Users & auth
+//
+// Credentials/session are owned by Supabase Auth now (see lib/supabase/),
+// not this table — `id` is the Supabase auth.users.id (UUID), assigned by
+// the signup route rather than generated here, and `passwordHash` is gone.
+// auth.users itself lives in Supabase's own `auth` schema, managed outside
+// Prisma, so there's no @relation to it — the app just guarantees this row
+// is created with a matching id at signup time (app/api/auth/signup).
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  id        String   @id
+  email     String   @unique
+  firstName String
+  lastName  String
+  // App-level permission, checked server-side for the /pharmacy admin page
+  // and its API route (see lib/auth/session.ts). Lives here, not in
+  // Supabase Auth, because this project has no custom-claims/Auth Hook
+  // setup to keep an app_metadata role in sync — Prisma is the one source
+  // of truth, same as everything else about this user.
+  role      Role     @default(user)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  medications      Medication[]
+  savedMedications SavedMedication[]
+  recentSearches   RecentSearch[]
+  personalProfile  PersonalProfile?
+  healthProfile    HealthProfile?
+  settings         UserSettings?
+  notifications    Notification[]
+}
+
+// Optional, fillable-later personal-info fields — kept off User (whose
+// fields are all set at signup and required) so an incomplete profile is
+// just a missing row, matching HealthProfile/UserSettings' shape below.
+// firstName/lastName/email already live on User; not duplicated here.
+//
+// dateOfBirth and phone are both free text (not DateTime) to match the
+// existing Personal Info screen's plain text inputs
+// (app/[locale]/(home)/(profile)/personal-profile/page.tsx) rather than
+// inventing a stricter shape it doesn't actually use.
+model PersonalProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  dateOfBirth String?
+  phone       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Field names/shapes match the existing Health Info screen
+// (app/[locale]/(home)/(profile)/health-profile/page.tsx) exactly —
+// allergies/chronicConditions are single free-text fields there
+// (comma-separated by the user), not arrays. emergencyContact* has no
+// existing screen yet; added per this task's explicit ask.
+//
+// No "current medications" field: a user's active regimen is already fully
+// queryable via Medication.userId — storing a second reference here would
+// just be a copy that can drift out of sync.
+model HealthProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  weightKg              String?
+  heightCm              String?
+  bloodType             String?
+  allergies             String?
+  chronicConditions     String?
+  emergencyContactName  String?
+  emergencyContactPhone String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Field names match the existing Settings screen's toggles exactly
+// (app/[locale]/(home)/(profile)/settings/page.tsx: doseReminders/
+// stockAlerts/pharmacyUpdates). No `theme` field: the app has
+// no theme/dark-mode system to persist a preference for.
+//
+// `locale` is the one field the task asked for that the real Settings page
+// doesn't yet read from stored data — it currently derives the displayed
+// language directly from the URL's locale segment via next-intl. Added for
+// forward compatibility (e.g. a future locale-aware notification), but
+// nothing reads it as a source of truth for routing today.
+model UserSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  doseReminders   Boolean @default(true)
+  stockAlerts     Boolean @default(true)
+  pharmacyUpdates Boolean @default(false)
+  locale          String  @default("en")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────────
+// A user's own active regimen (lib/types.ts: Medication, Dose)
+// ─────────────────────────────────────────────────────────────
+
+model Medication {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name      String
+  dose      String // e.g. "850mg" — kept as free text to match the form's DOSAGE_REGEX input
+  frequency Frequency
+  times     String[] // e.g. ["08:00", "20:00"] — count must match REQUIRED_TIME_COUNT[frequency]
+  startDate DateTime  @db.Date
+  endDate   DateTime? @db.Date
+  notes     String?
+
+  doses Dose[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Individual scheduled/logged dose instances for a medication
+model Dose {
+  id           String     @id @default(cuid())
+  medicationId String
+  medication   Medication @relation(fields: [medicationId], references: [id], onDelete: Cascade)
+
+  date    DateTime   @db.Date // day this dose belongs to
+  time    String // e.g. "08:00", mirrors Medication.times entries
+  status  DoseStatus @default(pending)
+  takenAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([medicationId, date, time])
+}
+
+// title/message are stored as plain, already-rendered text (not a
+// translation key) — generated server-side at creation time (see
+// app/api/notifications/route.ts and the schedule/doses routes below) in
+// whichever language the request was in, same convention as other
+// server-generated user-facing strings in this app (e.g. lib/axios.ts's
+// ApiError messages). medicationId/doseId/pharmacyId are plain id
+// references, not @relation fields, on purpose: only one is ever set
+// depending on `type`, and none of them should force a delete-cascade
+// decision onto Notification — an old notification outliving the
+// medication/dose it was about is fine, it's just history.
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type    NotificationType
+  title   String
+  message String
+  read    Boolean          @default(false)
+
+  medicationId String?
+  doseId       String?
+  pharmacyId   String?
+
+  createdAt DateTime @default(now())
+
+  // Dedupes dose_reminder (and incidentally dose_taken) per dose — Postgres
+  // treats each NULL as distinct, so this constraint has no effect on
+  // refill_needed/back_in_stock/availability_update rows, which never set
+  // doseId.
+  @@unique([doseId, type])
+  @@index([userId, read])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Drug reference catalog — merges the MOPH scrape (data/medications.json:
+// name, nameAr, form, strength, atcCode, bg, ingredients, price, sourceUrl)
+// with the richer display fields lib/types.ts:MedicationCatalogEntry expects
+// (genericName, brand, useCase, categories, description, disclaimer).
+// The scrape fields are populated by the import script; the display fields
+// are currently curated/mocked and may be null until backfilled.
+// ─────────────────────────────────────────────────────────────
+
+model MedicationCatalogEntry {
+  id String @id @default(cuid())
+
+  // --- from data/medications.json (MOPH scrape) ---
+  name        String // scraped "name", e.g. brand/product name as listed by MOPH
+  nameAr      String?
+  form        String // e.g. "Injectable solution" — MOPH's single form per listing
+  strength    String // e.g. "0.45%" or "250mg"
+  atcCode     String?
+  bg          String? // MOPH brand/generic marker ("B" / "G")
+  ingredients String?
+  price       String? // kept as scraped string, e.g. "176,974 L.L" (mixed currency formatting)
+  sourceUrl   String?
+
+  // --- curated/display fields (lib/types.ts) ---
+  genericName String?
+  brand       String?
+  useCase     String?
+  categories  String[]
+  description String?
+  disclaimer  String?
+
+  savedBy          SavedMedication[]
+  pharmacyStock    PharmacyMedicationAvailability[]
+  recentSearchedBy RecentSearch[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([atcCode])
+}
+
+// Bookmarked catalog entries, shown on the Saved tab
+model SavedMedication {
+  id             String                 @id @default(cuid())
+  userId         String
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catalogEntryId String
+  catalogEntry   MedicationCatalogEntry @relation(fields: [catalogEntryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, catalogEntryId])
+}
+
+// A user's most recently searched catalog entries — the "Recent Searches"
+// chips on the Home and Search pages. Recorded when a search result is
+// actually selected (see app/[locale]/(home)/search/page.tsx's handleSelect),
+// not on every keystroke — a half-typed query isn't "a search". `updatedAt`
+// (not createdAt) drives recency order: searching the same medication again
+// just bumps its existing row back to the top instead of creating a
+// duplicate, same one-row-per-(user, entry) shape as SavedMedication above.
+model RecentSearch {
+  id             String                 @id @default(cuid())
+  userId         String
+  user           User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  catalogEntryId String
+  catalogEntry   MedicationCatalogEntry @relation(fields: [catalogEntryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, catalogEntryId])
+}
+
+// ─────────────────────────────────────────────────────────────
+// Pharmacies (lib/types.ts: Pharmacy, PharmacyHours, PharmacyMedicationAvailability)
+// Note: distanceKm, isOpen, and updatedMinutesAgo in the frontend types are
+// derived at query time (from lat/lng + user location, hours, and updatedAt
+// respectively) rather than stored columns.
+// ─────────────────────────────────────────────────────────────
+
+model Pharmacy {
+  id        String  @id @default(cuid())
+  name      String
+  address   String
+  phone     String
+  latitude  Float?
+  longitude Float?
+  is24Hours Boolean @default(false)
+  mapUrl    String? // optional external map link (e.g. Google Maps), added for the admin create form
+
+  hours        PharmacyHours[]
+  availability PharmacyMedicationAvailability[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PharmacyHours {
+  id         String   @id @default(cuid())
+  pharmacyId String
+  pharmacy   Pharmacy @relation(fields: [pharmacyId], references: [id], onDelete: Cascade)
+
+  days  String // e.g. "Saturday – Thursday"
+  hours String // e.g. "8:00 AM – 11:00 PM"
+}
+
+// Per-pharmacy stock level for a catalog entry
+// Deliberately has no admin/manual-entry path and is not shown on the public
+// pharmacy pages — it's meant to be populated by a future automated feed
+// from each pharmacy's own inventory system, not typed in by hand. The 9
+// seeded rows (prisma/seed-pharmacy-availability.ts) are for local
+// dev/testing against /api/pharmacies/availability only; showing them as if
+// they were real stock would misrepresent actual availability. Leave the
+// schema, seed data, and route as-is until that real integration exists.
+model PharmacyMedicationAvailability {
+  id             String                 @id @default(cuid())
+  pharmacyId     String
+  pharmacy       Pharmacy               @relation(fields: [pharmacyId], references: [id], onDelete: Cascade)
+  catalogEntryId String
+  catalogEntry   MedicationCatalogEntry @relation(fields: [catalogEntryId], references: [id], onDelete: Cascade)
+
+  level     PharmacyAvailabilityLevel @default(out_of_stock)
+  updatedAt DateTime                  @updatedAt
+
+  @@unique([pharmacyId, catalogEntryId])
+}

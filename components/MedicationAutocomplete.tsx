@@ -1,14 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { Search, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Search, X, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import {
-  getMatchRange,
-  MedicationEntry,
-  MedicationSearchResult,
-  searchMedications,
-} from "@/lib/medicationSearch";
+import { getMatchRange } from "@/lib/medicationSearch";
+import { useMedicationSearch } from "@/hooks/useMedicationSearch";
+import type { ICatalogSearchHit } from "@/interfaces/interfaces";
 
 const DEBOUNCE_MS = 250;
 const DEFAULT_MAX_RESULTS = 20;
@@ -28,14 +25,15 @@ function HighlightedName({ text, query }: { text: string; query: string }) {
 }
 
 interface MedicationAutocompleteProps {
-  medications: MedicationEntry[];
-  onSelect?: (result: MedicationSearchResult) => void;
+  onSelect?: (result: ICatalogSearchHit) => void;
   placeholder?: string;
   maxResults?: number;
 }
 
+// Real search now — GET /api/medications?q= (Prisma-backed), not an
+// in-browser scan of the static data/medications.json bundle. See
+// hooks/useMedicationSearch.ts.
 export default function MedicationAutocomplete({
-  medications,
   onSelect,
   placeholder,
   maxResults = DEFAULT_MAX_RESULTS,
@@ -56,10 +54,7 @@ export default function MedicationAutocomplete({
     return () => clearTimeout(handle);
   }, [query]);
 
-  const results = useMemo(
-    () => searchMedications(debouncedQuery, medications, maxResults),
-    [debouncedQuery, medications, maxResults],
-  );
+  const { data: results = [], isFetching } = useMedicationSearch(debouncedQuery, maxResults);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -74,9 +69,9 @@ export default function MedicationAutocomplete({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  function handleSelect(result: MedicationSearchResult) {
-    setQuery(result.medication.name);
-    setDebouncedQuery(result.medication.name);
+  function handleSelect(result: ICatalogSearchHit) {
+    setQuery(result.name);
+    setDebouncedQuery(result.name);
     setIsOpen(false);
     onSelect?.(result);
   }
@@ -105,7 +100,7 @@ export default function MedicationAutocomplete({
   }
 
   const showEmptyState =
-    isOpen && debouncedQuery.trim().length > 0 && results.length === 0;
+    isOpen && debouncedQuery.trim().length > 0 && !isFetching && results.length === 0;
 
   return (
     <div ref={containerRef} className="relative w-full">
@@ -124,6 +119,7 @@ export default function MedicationAutocomplete({
           aria-controls="medication-autocomplete-list"
           className="w-full bg-transparent outline-none text-sm text-foreground placeholder:text-muted"
         />
+        {isFetching && <Loader2 size={16} className="text-muted shrink-0 animate-spin" />}
         {query && (
           <button
             type="button"
@@ -142,51 +138,40 @@ export default function MedicationAutocomplete({
           role="listbox"
           className="absolute z-20 mt-2 w-full max-h-96 overflow-y-auto bg-surface border border-border rounded-2xl shadow-lg divide-y divide-border"
         >
-          {results.map((result, i) => {
-            const { medication } = result;
-            return (
-              <li
-                key={`${medication.name}-${medication.form ?? ""}-${medication.strength ?? ""}-${i}`}
-                role="option"
-                aria-selected={i === activeIndex}
+          {results.map((result, i) => (
+            <li key={result.id} role="option" aria-selected={i === activeIndex}>
+              <button
+                type="button"
+                onClick={() => handleSelect(result)}
+                onMouseEnter={() => setActiveIndex(i)}
+                className={`w-full flex items-center gap-3 px-4 py-3 text-start transition-colors active:bg-border ${
+                  i === activeIndex ? "bg-primary-light" : "hover:bg-background"
+                }`}
               >
-                <button
-                  type="button"
-                  onClick={() => handleSelect(result)}
-                  onMouseEnter={() => setActiveIndex(i)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 text-start transition-colors active:bg-border ${
-                    i === activeIndex ? "bg-primary-light" : "hover:bg-background"
-                  }`}
-                >
-                  <Search size={14} className="text-muted shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">
-                      <HighlightedName text={medication.name} query={debouncedQuery} />
+                <Search size={14} className="text-muted shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground truncate">
+                    <HighlightedName text={result.name} query={debouncedQuery} />
+                  </p>
+                  {result.nameAr && (
+                    <p className="text-xs text-muted truncate" dir="rtl">
+                      {result.nameAr}
                     </p>
-                    {medication.nameAr && (
-                      <p className="text-xs text-muted truncate" dir="rtl">
-                        {medication.nameAr}
-                      </p>
-                    )}
-                    {(medication.form || medication.strength) && (
-                      <p className="text-xs text-muted truncate">
-                        {[medication.form, medication.strength]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                    )}
-                    {result.matchSource === "ingredients" && medication.ingredients && (
-                      <p className="text-xs text-accent truncate mt-0.5">
-                        {t("matchesIngredient", {
-                          ingredient: medication.ingredients,
-                        })}
-                      </p>
-                    )}
-                  </div>
-                </button>
-              </li>
-            );
-          })}
+                  )}
+                  {(result.form || result.strength) && (
+                    <p className="text-xs text-muted truncate">
+                      {[result.form, result.strength].filter(Boolean).join(" · ")}
+                    </p>
+                  )}
+                  {result.matchSource === "ingredients" && result.ingredients && (
+                    <p className="text-xs text-accent truncate mt-0.5">
+                      {t("matchesIngredient", { ingredient: result.ingredients })}
+                    </p>
+                  )}
+                </div>
+              </button>
+            </li>
+          ))}
         </ul>
       )}
 

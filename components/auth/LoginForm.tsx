@@ -5,38 +5,41 @@ import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
-import { Link, useRouter } from '@/i18n/routing';
+import { Link } from '@/i18n/routing';
 import { loginSchema, type LoginFormValues } from '@/lib/validations/auth';
-import { login } from '@/lib/auth/mockAuth';
 import FieldError from './FieldError';
 import GoogleIcon from './GoogleIcon';
 
-export default function LoginForm() {
+export type LoginSubmitValues = Pick<LoginFormValues, 'email' | 'password'>;
+
+interface LoginFormProps {
+  isSubmitting: boolean;
+  error?: string | null;
+  onSubmit: (values: LoginSubmitValues) => void;
+}
+
+// Presentational only — no axios/Supabase/mutation calls in here. Owns
+// local field state (via react-hook-form) and client-side validation, and
+// calls onSubmit(values) on submit; it has no idea what happens to that
+// data afterward (see login/page.tsx, which owns the actual login mutation
+// and decides what to do with the result).
+export default function LoginForm({ isSubmitting, error, onSubmit }: LoginFormProps) {
   const t = useTranslations('auth.login');
   const tErrors = useTranslations('auth.errors');
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [loginFailed, setLoginFailed] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
     defaultValues: { email: '', password: '', rememberMe: false },
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
-    setLoginFailed(false);
-    try {
-      // TODO: replace with the real login API call.
-      await login(data);
-      router.push('/home');
-    } catch {
-      setLoginFailed(true);
-    }
+  const submit = (data: LoginFormValues) => {
+    onSubmit({ email: data.email, password: data.password });
   };
 
   return (
@@ -44,13 +47,13 @@ export default function LoginForm() {
       <h1 className="text-center text-2xl font-bold text-brand-navy">{t('title')}</h1>
       <p className="mt-2 text-center text-sm text-brand-ink">{t('subtitle')}</p>
 
-      <form className="mt-8 space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
-        {loginFailed && (
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit(submit)} noValidate>
+        {error && (
           <p
             className="rounded-xl border border-danger-light-border bg-danger-light px-4 py-2.5 text-sm text-danger-strong"
             role="alert"
           >
-            {tErrors('loginFailed')}
+            {error}
           </p>
         )}
 
@@ -64,7 +67,7 @@ export default function LoginForm() {
             placeholder={t('emailPlaceholder')}
             aria-invalid={!!errors.email}
             className="force-ltr w-full rounded-xl border border-brand-border px-4 py-2.5 text-sm text-brand-navy placeholder:text-slate-400 focus:border-brand-blue focus:outline-none focus:ring-1 focus:ring-brand-blue"
-            {...register('email', { onChange: () => setLoginFailed(false) })}
+            {...register('email')}
           />
           <FieldError message={errors.email?.message && tErrors(errors.email.message)} />
         </div>
@@ -84,7 +87,7 @@ export default function LoginForm() {
               type={showPassword ? 'text' : 'password'}
               aria-invalid={!!errors.password}
               className="w-full rounded-xl border border-brand-border px-4 py-2.5 pe-11 text-sm text-brand-navy focus:border-brand-blue focus:outline-none focus:ring-1 focus:ring-brand-blue"
-              {...register('password', { onChange: () => setLoginFailed(false) })}
+              {...register('password')}
             />
             <button
               type="button"

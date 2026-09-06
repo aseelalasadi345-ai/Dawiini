@@ -3,16 +3,27 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import AddMedicationForm from "@/components/AddMedicationForm";
-import { useMedications } from "@/components/MedicationsProvider";
+import { useCreateMedication } from "@/hooks/useMedications";
 import { useRouter } from "@/i18n/navigation";
+import { ApiError } from "@/lib/axios";
 import { MedicationFormValues } from "@/lib/schemas/medication";
 import { scannedMedicationToFormValues } from "@/lib/mappers/scan";
-import { ScannedMedication, SCAN_HANDOFF_KEY } from "@/lib/mock/scanResults";
+import { ScannedMedication, SCAN_HANDOFF_KEY } from "@/lib/scan";
+
+// Owns all backend interaction: the useCreateMedication mutation (wrapping
+// POST /api/medications — see hooks/useMedications.ts, including its
+// invalidate-on-success wiring) and the redirect on success.
+// AddMedicationForm below is purely presentational — it only knows how to
+// call onSubmit(values).
+function errorMessage(error: unknown): string | null {
+  if (error instanceof ApiError) return error.message;
+  return error ? "Something went wrong. Please try again." : null;
+}
 
 export default function AddMedicationPage() {
   const router = useRouter();
   const t = useTranslations("addMedication");
-  const { addMedication } = useMedications();
+  const createMedication = useCreateMedication();
 
   const [scanPrefill, setScanPrefill] = useState<MedicationFormValues | null>(
     null,
@@ -34,6 +45,12 @@ export default function AddMedicationPage() {
       // malformed/unavailable sessionStorage — just fall back to a blank form
     }
   }, []);
+
+  function handleSubmit(values: MedicationFormValues) {
+    createMedication.mutate(values, {
+      onSuccess: () => router.push("/medications"),
+    });
+  }
 
   return (
     <div className="max-w-xl mx-auto py-8">
@@ -57,7 +74,9 @@ export default function AddMedicationPage() {
       <AddMedicationForm
         mode="add"
         initialData={scanPrefill ?? undefined}
-        onSuccess={(medication) => addMedication(medication)}
+        isSubmitting={createMedication.isPending}
+        error={errorMessage(createMedication.error)}
+        onSubmit={handleSubmit}
       />
     </div>
   );

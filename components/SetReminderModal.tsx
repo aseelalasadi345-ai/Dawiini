@@ -7,6 +7,8 @@ import { useTranslations } from "next-intl";
 interface SetReminderModalProps {
   medicationName: string;
   initialTimes: string[];
+  isSubmitting?: boolean;
+  error?: string | null;
   onClose: () => void;
   onSave: (times: string[]) => void;
 }
@@ -14,6 +16,8 @@ interface SetReminderModalProps {
 export default function SetReminderModal({
   medicationName,
   initialTimes,
+  isSubmitting = false,
+  error,
   onClose,
   onSave,
 }: SetReminderModalProps) {
@@ -58,6 +62,12 @@ export default function SetReminderModal({
 
         <p className="text-sm text-muted mb-4">{medicationName}</p>
 
+        {error && (
+          <div className="rounded-md bg-danger-light border border-danger-light-border text-danger-strong text-sm px-4 py-3 mb-4">
+            {error}
+          </div>
+        )}
+
         <div className="flex flex-wrap gap-2 items-center mb-5">
           {times.map((time, i) => (
             <div key={i} className="flex items-center gap-1">
@@ -90,10 +100,11 @@ export default function SetReminderModal({
 
         <button
           type="button"
+          disabled={isSubmitting}
           onClick={() => onSave(times)}
-          className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
+          className="w-full py-3 rounded-md text-white font-medium bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98] disabled:opacity-60 disabled:active:scale-100"
         >
-          {t("save")}
+          {isSubmitting ? t("saving") : t("save")}
         </button>
       </div>
     </div>

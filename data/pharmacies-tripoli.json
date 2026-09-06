@@ -1,0 +1,283 @@
+{
+  "source": "Google Places",
+  "pharmacies": [
+    {
+      "name": "Alam Pharmacy",
+      "address": "CRQQ+93P, Tripoli, Lebanon",
+      "phone": "+961 6 626 000",
+      "latitude": 34.4384617,
+      "longitude": 35.8377045,
+      "is24Hours": true,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "Open 24 hours"
+        }
+      ]
+    },
+    {
+      "name": "New Lebanon Pharmacy",
+      "address": "Tripoli, Lebanon",
+      "phone": "+961 6 629 226",
+      "latitude": 34.4415499,
+      "longitude": 35.8382938,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday",
+          "hours": "Open 24 hours"
+        },
+        {
+          "days": "Tuesday – Saturday",
+          "hours": "9:30 AM – 12:00 AM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "9:30 PM – 12:00 AM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Alameddine",
+      "address": "CRVR+3V4, Tripoli, Lebanon",
+      "phone": "+961 6 437 000",
+      "latitude": 34.442633,
+      "longitude": 35.8422069,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "9:00 AM – 11:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "Closed"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Judy",
+      "address": "Tripoli, Lebanon",
+      "phone": "+961 6 205 557",
+      "latitude": 34.4427028,
+      "longitude": 35.8274179,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "8:00 AM – 12:00 AM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "10:00 AM – 10:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacity",
+      "address": "CRVC+576, Tripoli, Lebanon",
+      "phone": "+961 6 216 818",
+      "latitude": 34.4429198,
+      "longitude": 35.8206509,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "9:00 AM – 10:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "Closed"
+        }
+      ]
+    },
+    {
+      "name": "Kalaajieh Plus",
+      "address": "Achrafieh El Daya Street, Dam w Farez, Tripoli, Lebanon",
+      "phone": "+961 81 007 404",
+      "latitude": 34.4229704,
+      "longitude": 35.826608,
+      "is24Hours": true,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "Open 24 hours"
+        }
+      ]
+    },
+    {
+      "name": "Sultan Pharmacy",
+      "address": "CRHR+4CC, Tripoli, Lebanon",
+      "phone": "+961 6 441 511",
+      "latitude": 34.4278008,
+      "longitude": 35.8410126,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "12:00 AM – 10:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Nadine",
+      "address": "CRPM+4GJ, Tripoli, Lebanon",
+      "phone": "+961 6 440 470",
+      "latitude": 34.4353348,
+      "longitude": 35.8337616,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "8:30 AM – 9:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Al Madina Pharmacy",
+      "address": "CRQM+47Q, Tripoli, Lebanon",
+      "phone": "+961 6 626 530",
+      "latitude": 34.4378481,
+      "longitude": 35.8332477,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "8:00 AM – 8:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "Closed"
+        }
+      ]
+    },
+    {
+      "name": "Karimeh Pharmacy",
+      "address": "Cheikh Nadim El Jisr, Tripoli, Lebanon",
+      "phone": "+961 3 317 270",
+      "latitude": 34.4392091,
+      "longitude": 35.830359,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "8:00 AM – 10:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Ghina",
+      "address": "CRCV+9HM, Tripoli, Lebanon",
+      "phone": "+961 6 430 667",
+      "latitude": 34.42186,
+      "longitude": 35.8408178,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "10:00 AM – 9:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "New Jamal Pharmacy",
+      "address": "CRFV+H7Q, Tripoli, Lebanon",
+      "phone": null,
+      "latitude": 34.4239631,
+      "longitude": 35.8432278,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "8:00 AM – 8:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Al Bassam Pharmacy",
+      "address": "CRGQ+4Q8, Tripoli, Lebanon",
+      "phone": "+961 6 431 811",
+      "latitude": 34.4252911,
+      "longitude": 35.8394616,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "8:30 AM – 11:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Mina",
+      "address": "Al Mina, Tripoli District, North Governorate, Lebanon",
+      "phone": "+961 6 600 745",
+      "latitude": 34.4524975,
+      "longitude": 35.8156917,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Sunday",
+          "hours": "9:00 AM – 9:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Merkbawi",
+      "address": "Zehrieh Street, Tripoli, Lebanon",
+      "phone": "+961 79 335 053",
+      "latitude": 34.4400437,
+      "longitude": 35.844018,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "8:30 AM – 8:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "Closed"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacie Hazem",
+      "address": "1301 Mina, Lebanon",
+      "phone": "+961 6 211 113",
+      "latitude": 34.4433904,
+      "longitude": 35.8144349,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Saturday",
+          "hours": "8:00 AM – 11:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "10:00 AM – 10:00 PM"
+        }
+      ]
+    },
+    {
+      "name": "Pharmacy Fayhaa Al Mina",
+      "address": "El Istiklal, near Shaar & Sultan restaurant, Al Mina, Tripoli, Lebanon",
+      "phone": "+961 6 220 448",
+      "latitude": 34.4506453,
+      "longitude": 35.8085453,
+      "is24Hours": false,
+      "hours": [
+        {
+          "days": "Monday – Friday",
+          "hours": "9:00 AM – 8:00 PM"
+        },
+        {
+          "days": "Saturday",
+          "hours": "9:00 AM – 7:00 PM"
+        },
+        {
+          "days": "Sunday",
+          "hours": "11:00 AM – 5:00 PM"
+        }
+      ]
+    }
+  ]
+}

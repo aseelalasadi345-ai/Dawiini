@@ -1,19 +1,21 @@
 'use client';
 
 import { useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ChevronLeft, Lock, MailCheck } from 'lucide-react';
 import { Link } from '@/i18n/routing';
 import { forgotPasswordSchema, type ForgotPasswordFormValues } from '@/lib/validations/auth';
-import { requestPasswordReset } from '@/lib/auth/mockAuth';
+import { useForgotPassword } from '@/hooks/useAuth';
 import FieldError from './FieldError';
 
 export default function ForgotPasswordForm() {
   const t = useTranslations('auth.forgotPassword');
   const tErrors = useTranslations('auth.errors');
+  const locale = useLocale();
   const [submitted, setSubmitted] = useState(false);
+  const forgotPassword = useForgotPassword();
 
   const {
     register,
@@ -26,10 +28,16 @@ export default function ForgotPasswordForm() {
   });
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
-    // TODO: replace with the real password-reset API call. The success
-    // state below is shown regardless of whether the email exists, by design.
-    await requestPasswordReset(data);
-    setSubmitted(true);
+    // Real Supabase Auth request (see app/api/auth/forgot-password/route.ts).
+    // The success state below is shown regardless of whether the email
+    // exists, by design — see that route's comment on why. Only a genuine
+    // network/server failure (never "email not found") reaches the catch.
+    try {
+      await forgotPassword.mutateAsync({ email: data.email, locale });
+      setSubmitted(true);
+    } catch {
+      // forgotPassword.isError below renders the message.
+    }
   };
 
   return (
@@ -74,6 +82,10 @@ export default function ForgotPasswordForm() {
               />
               <FieldError message={errors.email?.message && tErrors(errors.email.message)} />
             </div>
+
+            {forgotPassword.isError && (
+              <p className="text-sm text-danger-strong">{t('error')}</p>
+            )}
 
             <button
               type="submit"

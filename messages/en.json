@@ -4,6 +4,7 @@
     "search": "Search",
     "my-medication": "My Medications",
     "pharmacies": "Pharmacies",
+    "admin": "Add Pharmacy",
     "notifications": "Notifications",
     "profile": "Profile",
     "openMenu": "Open menu",
@@ -11,9 +12,6 @@
   },
   "home": {
     "greeting": "Good morning, {name}",
-    "greetingMorning": "Good morning, {name}",
-    "greetingAfternoon": "Good afternoon, {name}",
-    "greetingEvening": "Good evening, {name}",
     "searchPlaceholder": "Search for a medication…",
     "scanPrescription": "Scan Prescription",
     "scanPrescriptionSub": "Upload or camera",
@@ -21,9 +19,7 @@
     "findPharmaciesSub": "Near you now",
     "todayDoses": "Today's Doses",
     "seeAll": "See all",
-    "recentSearches": "Recent Searches",
-    "take": "Take",
-    "snooze": "Snooze"
+    "recentSearches": "Recent Searches"
   },
   "today": {
     "title": "Today",
@@ -31,39 +27,17 @@
     "skip": "Skip",
     "snooze": "Snooze",
     "taken": "Taken",
-    "skipped": "Skipped"
+    "skipped": "Skipped",
+    "loading": "Loading…",
+    "loadError": "Couldn't load today's doses.",
+    "retry": "Retry",
+    "empty": "No doses scheduled for today."
   },
   "notifications": {
     "title": "Notifications",
     "markAllRead": "Mark all read",
-    "empty": "You're all caught up.",
-    "items": {
-      "doseReminder": {
-        "title": "Dose reminder",
-        "body": "Time to take Omeprazole 20mg",
-        "time": "10 minutes ago"
-      },
-      "backInStock": {
-        "title": "Back in stock",
-        "body": "Amoxicillin 500mg is now available at Al Dawaa.",
-        "time": "1 hour ago"
-      },
-      "doseTaken": {
-        "title": "Morning dose taken",
-        "body": "You marked Metformin 850mg as taken at 08:04 AM.",
-        "time": "4 hours ago"
-      },
-      "refillNeeded": {
-        "title": "Refill needed",
-        "body": "You have 5 doses of Atorvastatin remaining.",
-        "time": "Yesterday"
-      },
-      "availabilityUpdate": {
-        "title": "Availability update",
-        "body": "Paracetamol 1000mg stock is limited at United Pharmacy.",
-        "time": "2 days ago"
-      }
-    }
+    "loading": "Loading notifications...",
+    "empty": "You're all caught up."
   },
   "profile": {
     "tabs": {
@@ -71,24 +45,34 @@
       "healthInfo": "Health Info",
       "settings": "Settings"
     },
+    "loading": "Loading…",
+    "loadError": "Couldn't load your profile.",
+    "retry": "Retry",
     "personalInfo": {
       "firstName": "First name",
       "lastName": "Last name",
       "dateOfBirth": "Date of birth",
       "phone": "Phone",
       "email": "Email",
+      "readOnlyNote": "Name and email can't be changed here.",
       "save": "Save changes",
-      "saved": "Saved!"
+      "saved": "Saved!",
+      "saveError": "Couldn't save. Please try again."
     },
     "healthInfo": {
       "note": "Optional. Helps personalise your experience.",
+      "empty": "No health info yet — add some below.",
       "weight": "Weight (kg)",
       "height": "Height (cm)",
       "bloodType": "Blood type",
+      "bloodTypePlaceholder": "Select blood type",
       "allergies": "Allergies",
       "chronicConditions": "Chronic conditions",
+      "currentMedications": "Current medications",
+      "noMedications": "No active medications",
       "save": "Save",
-      "saved": "Saved!"
+      "saved": "Saved!",
+      "saveError": "Couldn't save. Please try again."
     },
     "settings": {
       "language": "Language",
@@ -96,7 +80,16 @@
       "doseReminders": "Dose reminders",
       "stockAlerts": "Stock alerts",
       "pharmacyUpdates": "Pharmacy updates",
+      "saveError": "Couldn't update settings.",
       "logout": "Log out"
+    },
+    "errors": {
+      "dateOfBirthInvalid": "Enter a valid date of birth.",
+      "dateOfBirthFuture": "Date of birth can't be in the future.",
+      "phoneInvalid": "Enter a valid phone number (digits only, optionally starting with +).",
+      "weightInvalid": "Weight must be a number between 1 and 500 kg.",
+      "heightInvalid": "Height must be a number between 1 and 300 cm.",
+      "bloodTypeInvalid": "Select a valid blood type."
     }
   },
   "medicationTabs": {
@@ -116,86 +109,47 @@
     "confirmDelete": "Delete"
   },
   "medications": {
-    "title": "My Medications",
-    "add": "Add",
     "since": "Since",
-    "empty": "You haven't added any medications yet."
+    "empty": "You haven't added any medications yet.",
+    "loading": "Loading…",
+    "loadError": "Couldn't load your medications.",
+    "retry": "Retry",
+    "actionError": "Something went wrong. Please try again."
   },
   "saved": {
+    "loading": "Loading saved medications...",
     "empty": "No saved medications yet.",
     "view": "View",
     "unsave": "Remove from saved"
-  },
-  "medicationDetail": {
-    "back": "Back",
-    "backToResults": "Back to results",
-    "genericName": "Generic name",
-    "about": "About this medication",
-    "strength": "Strength",
-    "form": "Form",
-    "findPharmacies": "Find Pharmacies",
-    "addToSchedule": "Add to Schedule",
-    "nearbyPharmacies": "Available at nearby pharmacies",
-    "pharmaciesNearYou": "{count} pharmacies near you",
-    "open": "Open",
-    "closed": "Closed",
-    "inStock": "In Stock",
-    "outOfStock": "Out of Stock",
-    "save": "Save",
-    "unsave": "Remove from saved",
-    "saved": "Saved",
-    "notFound": "Medication not found."
   },
   "setReminder": {
     "title": "Set Reminder",
     "addTime": "Add time",
     "removeTime": "Remove time",
     "save": "Save",
+    "saving": "Saving…",
     "close": "Close"
   },
   "pharmacies": {
     "title": "Nearby Pharmacies",
     "subtitle": "Browse pharmacies near you.",
-    "filteredBy": "Showing for:",
-    "filteredByNextDose": "Showing for your next dose:",
-    "empty": "No pharmacies match these filters.",
-    "open": "Open",
-    "closed": "Closed",
-    "inStock": "In stock",
-    "outOfStock": "Out of stock",
-    "openUntil": "Open until {time}",
+    "empty": "No pharmacies yet — check back soon.",
     "open24": "Open 24 hours",
-    "updatedAgo": "Updated {minutes}m ago",
+    "seeHours": "See hours",
     "call": "Call",
     "directions": "Directions",
-    "filters": {
-      "all": "All",
-      "openNow": "Open now",
-      "inStock": "In stock",
-      "nearby": "< 1km"
-    },
-    "legend": {
-      "inStock": "In stock",
-      "outOfStock": "Out of stock",
-      "closed": "Closed",
-      "here": "You are here"
-    }
+    "map": "Map"
   },
   "pharmacyDetail": {
     "back": "Back to pharmacies",
     "notFound": "Pharmacy not found.",
-    "reviews": "{count} reviews",
-    "openingHours": "Opening Hours",
-    "medicationAvailability": "Medication Availability",
-    "plenty": "Plenty",
-    "limited": "Limited",
-    "outOfStock": "Out of stock"
+    "hours": "Hours"
   },
   "search": {
     "title": "Search",
     "scanPrescription": "Scan Prescription",
     "scanPrescriptionSub": "Upload or camera",
-    "browseCatalog": "Browse Medications"
+    "recentSearches": "Recent Searches"
   },
   "medicationSearch": {
     "placeholder": "Search for a medication…",
@@ -210,7 +164,16 @@
     "atcCode": "ATC Code",
     "category": "Category",
     "price": "Price",
-    "viewOnMoph": "View on MOPH National Drugs Database"
+    "viewOnMoph": "View on MOPH National Drugs Database",
+    "save": "Save",
+    "unsave": "Remove from saved",
+    "nearbyPharmacies": "Nearby pharmacies",
+    "noAvailabilityInfo": "No availability info right now — pharmacy stock isn't tracked yet for this medication.",
+    "stockLevel": {
+      "plenty": "In stock",
+      "limited": "Limited stock",
+      "out_of_stock": "Out of stock"
+    }
   },
   "scan": {
     "title": "Scan Prescription",
@@ -238,17 +201,16 @@
     "strengthPlaceholder": "e.g. 500mg",
     "frequencyPlaceholder": "e.g. Twice daily",
     "notDetected": "Couldn't detect this — please fill it in.",
+    "nameNotDetected": "Medication name not detected",
     "removeMedication": "Remove medication",
-    "confirmAndView": "Confirm & View Details",
     "addAllToSchedule": "Add all to schedule",
+    "enterManually": "Enter medication manually instead",
     "noMedicationsLeft": "No medications left to confirm."
   },
   "auth": {
     "login": {
       "title": "Welcome back",
       "subtitle": "Log in to your Dawiini account.",
-      "identifierLabel": "Email or phone number",
-      "identifierPlaceholder": "sara@example.com or +966 5X XXX XXXX",
       "emailLabel": "Email",
       "emailPlaceholder": "sara@example.com",
       "passwordLabel": "Password",
@@ -259,7 +221,6 @@
       "orContinueWith": "or continue with",
       "continueWithGoogle": "Continue with Google",
       "noAccount": "Don't have an account?",
-      "signUp": "Sign up",
       "signUpLink": "Sign up"
     },
     "forgotPassword": {
@@ -271,7 +232,24 @@
       "submit": "Send reset link",
       "submitting": "Sending...",
       "successTitle": "Check your email",
-      "successMessage": "If an account exists with this email, we've sent a link to reset your password."
+      "successMessage": "If an account exists with this email, we've sent a link to reset your password.",
+      "error": "Something went wrong. Please try again."
+    },
+    "resetPassword": {
+      "title": "Set a new password",
+      "subtitle": "Choose a new password for your account.",
+      "passwordLabel": "New password",
+      "passwordHint": "Minimum 8 characters, including a number.",
+      "confirmPasswordLabel": "Confirm new password",
+      "submit": "Reset password",
+      "submitting": "Resetting...",
+      "successTitle": "Password updated",
+      "successMessage": "Your password has been reset. You can now log in with your new password.",
+      "backToLogin": "Back to login",
+      "error": "Something went wrong. Please try again.",
+      "invalidTitle": "This link is invalid or has expired",
+      "invalidMessage": "Password reset links can only be used once and expire after a while. Request a new one to continue.",
+      "requestNewLink": "Request a new link"
     },
     "signup": {
       "title": "Create your account",
@@ -292,19 +270,23 @@
       "submit": "Create account",
       "haveAccount": "Already have an account?",
       "loginLink": "Log in",
-      "submitting": "Creating account..."
+      "submitting": "Creating account...",
+      "checkEmailTitle": "Check your email",
+      "checkEmailMessage": "We've sent a confirmation link to {email}. Confirm your email to finish creating your account."
     },
     "errors": {
-      "identifierRequired": "This field is required",
-      "identifierInvalid": "Enter a valid email or phone number",
       "nameRequired": "This field is required",
       "emailRequired": "Email is required",
       "emailInvalid": "Enter a valid email address",
       "passwordRequired": "Password is required",
       "passwordTooShort": "Password must be at least 8 characters",
+      "passwordNeedsNumber": "Password must include a number",
       "confirmPasswordRequired": "Please confirm your password",
       "passwordMismatch": "Passwords do not match",
-      "loginFailed": "Incorrect email or password"
+      "agreeRequired": "You must agree to the Terms of Service and Privacy Policy",
+      "loginFailed": "Incorrect email or password",
+      "emailNotConfirmed": "Please confirm your email before logging in. Check your inbox for the confirmation link.",
+      "samePassword": "New password must be different from your current password."
     }
   },
   "addMedication": {
@@ -399,12 +381,6 @@
     "copyright": "© 2025 Dawiini. All rights reserved.",
     "staffPortal": "Staff portal"
   },
-  "appNav": {
-    "home": "Home",
-    "search": "Search",
-    "myMedications": "My Medications",
-    "pharmacies": "Pharmacies"
-  },
   "onboarding": {
     "skipAll": "Skip all",
     "skipThisStep": "Skip this step",
@@ -439,35 +415,42 @@
       "letsGo": "Let's go"
     }
   },
-  "notificationsPage": {
-    "title": "Notifications",
-    "markAllRead": "Mark all read",
-    "items": {
-      "doseReminder": {
-        "title": "Dose reminder",
-        "description": "Time to take Omeprazole 20mg",
-        "time": "10 minutes ago"
-      },
-      "backInStock": {
-        "title": "Back in stock",
-        "description": "Amoxicillin 500mg is now available at Al Dawaa.",
-        "time": "1 hour ago"
-      },
-      "morningDoseTaken": {
-        "title": "Morning dose taken",
-        "description": "You marked Metformin 850mg as taken at 08:04 AM.",
-        "time": "4 hours ago"
-      },
-      "refillNeeded": {
-        "title": "Refill needed",
-        "description": "You have 5 doses of Atorvastatin remaining.",
-        "time": "Yesterday"
-      },
-      "availabilityUpdate": {
-        "title": "Availability update",
-        "description": "Paracetamol 1000mg stock is limited at United Pharmacy.",
-        "time": "2 days ago"
-      }
-    }
+
+  "admin": {
+    "title": "Add a New Pharmacy",
+    "subtitle": "Register a pharmacy so patients can find it on Dawiini.",
+    "nameLabel": "Pharmacy name",
+    "namePlaceholder": "Al Dawaa Pharmacy",
+    "addressLabel": "Location / address",
+    "addressPlaceholder": "King Fahd Road, Riyadh",
+    "phoneLabel": "Phone number",
+    "phonePlaceholder": "+966 5X XXX XXXX",
+    "open24Label": "Open 24 hours",
+    "defaultHoursLabel": "Default hours",
+    "hoursLabel": "Hours",
+    "hoursHint": "The default above applies to every day unless you mark it as an exception below.",
+    "exceptionLabel": "Different hours this day",
+    "inheritsDefault": "Same as default",
+    "closedLabel": "Closed",
+    "opensAtLabel": "Opens at",
+    "closesAtLabel": "Closes at",
+    "days": {
+      "Monday": "Monday",
+      "Tuesday": "Tuesday",
+      "Wednesday": "Wednesday",
+      "Thursday": "Thursday",
+      "Friday": "Friday",
+      "Saturday": "Saturday",
+      "Sunday": "Sunday"
+    },
+    "mapUrlLabel": "Map link (Google Maps or similar)",
+    "mapUrlPlaceholder": "https://maps.google.com/...",
+    "latitudeLabel": "Latitude (optional)",
+    "latitudePlaceholder": "34.4386",
+    "longitudeLabel": "Longitude (optional)",
+    "longitudePlaceholder": "35.8383",
+    "coordinatesHint": "Used later to show distance and sort by nearest — leave blank if you don't have it handy.",
+    "submit": "Add Pharmacy",
+    "successMessage": "Pharmacy added successfully."
   }
 }

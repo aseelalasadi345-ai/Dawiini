@@ -12,12 +12,7 @@ import {
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
-import {
-  runMockScan,
-  ScannedMedication,
-  ScanResult,
-  SCAN_HANDOFF_KEY,
-} from "@/lib/mock/scanResults";
+import { ScannedMedication, ScanResult, SCAN_HANDOFF_KEY } from "@/lib/scan";
 
 type Step = "upload" | "uploaded" | "analyzing" | "results";
 
@@ -26,17 +21,25 @@ export default function ScanPrescriptionPage() {
   const router = useRouter();
 
   const [step, setStep] = useState<Step>("upload");
+  const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [medications, setMedications] = useState<ScannedMedication[]>([]);
+  // A real system failure (network/timeout/server error) — distinct from
+  // outcome === "failure", which means the AI scan ran fine but found no
+  // legible medication info. Kept separate so the UI can say the right
+  // thing (and skip the "AI-assisted" disclaimer when no AI scan actually
+  // completed).
+  const [scanError, setScanError] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const webcamInputRef = useRef<HTMLInputElement>(null);
 
-  function handleFileSelected(file: File | undefined) {
-    if (!file) return;
-    setFileName(file.name);
+  function handleFileSelected(selected: File | undefined) {
+    if (!selected) return;
+    setFile(selected);
+    setFileName(selected.name);
     setStep("uploaded");
   }
 
@@ -46,21 +49,48 @@ export default function ScanPrescriptionPage() {
     handleFileSelected(e.dataTransfer.files?.[0]);
   }
 
-  function startAnalysis() {
+  async function startAnalysis() {
+    if (!file) return;
     setStep("analyzing");
-    setTimeout(() => {
-      const result = runMockScan();
+    setScanError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      const response = await fetch("/api/search/scan", {
+        method: "POST",
+        body: formData,
+      });
+      const body = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setScanError(body?.error || "Something went wrong. Please try again.");
+        setScanResult({ outcome: "failure", medications: [] });
+        setMedications([]);
+        setStep("results");
+        return;
+      }
+
+      const result: ScanResult = body.data;
       setScanResult(result);
       setMedications(result.medications);
       setStep("results");
-    }, 1200);
+    } catch {
+      setScanError("Couldn't reach the server. Check your connection and try again.");
+      setScanResult({ outcome: "failure", medications: [] });
+      setMedications([]);
+      setStep("results");
+    }
   }
 
   function resetToUpload() {
     setStep("upload");
+    setFile(null);
     setFileName(null);
     setScanResult(null);
     setMedications([]);
+    setScanError(null);
   }
 
   function removeMedication(id: string) {
@@ -77,18 +107,16 @@ export default function ScanPrescriptionPage() {
     );
   }
 
-  function handleConfirmAndView() {
-    const first = medications[0];
-    if (!first) return;
-    router.push(`/medications/${first.id}?from=scan`);
-  }
-
   function handleAddAllToSchedule() {
     try {
       sessionStorage.setItem(SCAN_HANDOFF_KEY, JSON.stringify(medications));
     } catch {
       // sessionStorage unavailable — the Add form just falls back to blank
     }
+    router.push("/add");
+  }
+
+  function handleEnterManually() {
     router.push("/add");
   }
 
@@ -258,25 +286,39 @@ export default function ScanPrescriptionPage() {
                   {t("failureTitle")}
                 </p>
                 <p className="text-xs text-danger-strong mt-0.5">
-                  {t("failureSubtitle")}
+                  {/* A real system error (network/timeout/server) gets its own
+                      plain message from the server; a genuine "AI ran but
+                      found nothing legible" outcome gets the translated copy. */}
+                  {scanError || t("failureSubtitle")}
                 </p>
               </div>
             </div>
           )}
 
-          <div className="flex items-start gap-2 rounded-xl bg-background border border-border text-xs text-muted px-4 py-3">
-            <AlertTriangle size={14} className="shrink-0 mt-0.5" />
-            <p>{t("aiDisclaimer")}</p>
-          </div>
+          {!scanError && (
+            <div className="flex items-start gap-2 rounded-xl bg-background border border-border text-xs text-muted px-4 py-3">
+              <AlertTriangle size={14} className="shrink-0 mt-0.5" />
+              <p>{t("aiDisclaimer")}</p>
+            </div>
+          )}
 
           {scanResult.outcome === "failure" ? (
-            <button
-              type="button"
-              onClick={resetToUpload}
-              className="w-full py-3 rounded-2xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
-            >
-              {t("tryAgain")}
-            </button>
+            <div className="flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={resetToUpload}
+                className="w-full py-3 rounded-2xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
+              >
+                {t("tryAgain")}
+              </button>
+              <button
+                type="button"
+                onClick={handleEnterManually}
+                className="w-full py-3 rounded-2xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-background active:bg-border"
+              >
+                {t("enterManually")}
+              </button>
+            </div>
           ) : (
             <>
               <div className="flex flex-col gap-3">
@@ -292,7 +334,7 @@ export default function ScanPrescriptionPage() {
                         </div>
                         <div>
                           <p className="text-sm font-semibold text-foreground">
-                            {med.name}
+                            {med.name || t("nameNotDetected")}
                           </p>
                           <p className="text-xs text-muted">
                             {med.strength
@@ -341,7 +383,7 @@ export default function ScanPrescriptionPage() {
                         />
                       </div>
                     </div>
-                    {(!med.strength || !med.frequency) && (
+                    {(!med.name || !med.strength || !med.frequency) && (
                       <p className="text-xs text-warning-strong">
                         {t("notDetected")}
                       </p>
@@ -355,22 +397,13 @@ export default function ScanPrescriptionPage() {
                   {t("noMedicationsLeft")}
                 </p>
               ) : (
-                <>
-                  <button
-                    type="button"
-                    onClick={handleConfirmAndView}
-                    className="w-full py-3 rounded-2xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
-                  >
-                    {t("confirmAndView")} →
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAddAllToSchedule}
-                    className="w-full py-3 rounded-2xl border border-border text-sm font-medium text-foreground transition-colors hover:bg-background active:bg-border"
-                  >
-                    {t("addAllToSchedule")}
-                  </button>
-                </>
+                <button
+                  type="button"
+                  onClick={handleAddAllToSchedule}
+                  className="w-full py-3 rounded-2xl text-white text-sm font-semibold bg-gradient-to-r from-gradient-start to-gradient-end transition-all hover:opacity-90 active:scale-[0.98]"
+                >
+                  {t("addAllToSchedule")}
+                </button>
               )}
             </>
           )}

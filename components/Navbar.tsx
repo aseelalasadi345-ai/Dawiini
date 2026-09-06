@@ -5,21 +5,40 @@ import Image from "next/image";
 import { Link, usePathname, useRouter } from "../i18n/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { Bell, Menu, X } from "lucide-react";
-import { notifications } from "@/lib/mock/notifications";
+import { useNotifications } from "@/hooks/useNotifications";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const locale = useLocale();
   const t = useTranslations("navbar");
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const { user } = useAuth();
+  // Not signed in -> no notifications to fetch or badge; `enabled: !!user`
+  // means signed-out visitors never issue the request at all.
+  const { data: notificationsResponse } = useNotifications(!!user);
+  const unreadCount = notificationsResponse?.data?.filter((n) => !n.read).length ?? 0;
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // firstName is required at signup so this should always be set, but fall
+  // back to the email's first letter (never another hardcoded letter) for
+  // any edge case (e.g. a blank/whitespace name slipping through).
+  const avatarInitial = (
+    user?.firstName?.trim()?.[0] ??
+    user?.email?.trim()?.[0] ??
+    "?"
+  ).toUpperCase();
 
   const navLinks = [
     { label: t("home"), href: "/home" },
     { label: t("search"), href: "/search" },
     { label: t("my-medication"), href: "/today" },
     { label: t("pharmacies"), href: "/pharmacies" },
+    // Only rendered for admins — the route itself also 404s non-admins
+    // server-side (app/[locale]/(admin)/pharmacy/page.tsx), so this is
+    // purely about not showing a link to a page most users can't use, not
+    // the actual access control.
+    ...(user?.role === "admin" ? [{ label: t("admin"), href: "/pharmacy" }] : []),
   ];
 
   const switchLocale = () => {
@@ -87,7 +106,7 @@ export default function Navbar() {
             className="w-9 h-9 rounded-full bg-gradient-to-br from-avatar-gradient-start to-avatar-gradient-end text-white flex items-center justify-center font-semibold transition-transform hover:opacity-90 active:scale-95"
             aria-label={t("profile")}
           >
-            S
+            {avatarInitial}
           </Link>
 
           <button

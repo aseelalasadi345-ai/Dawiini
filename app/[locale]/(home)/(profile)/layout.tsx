@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
-import { mockPersonalInfo } from "@/lib/mock/user";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function ProfileLayout({
   children,
@@ -11,9 +11,15 @@ export default function ProfileLayout({
 }) {
   const t = useTranslations("profile");
   const pathname = usePathname();
+  // Name/email come straight from AuthProvider (the session), not a
+  // useProfile() fetch — they're already known synchronously (seeded
+  // server-side in app/[locale]/layout.tsx), so there's no loading state to
+  // handle here and no reason to duplicate the GET /api/profile request
+  // every sub-page under this layout would otherwise trigger again.
+  const { user } = useAuth();
 
-  const fullName = `${mockPersonalInfo.firstName} ${mockPersonalInfo.lastName}`.trim();
-  const initial = mockPersonalInfo.firstName.charAt(0).toUpperCase() || "?";
+  const fullName = user ? `${user.firstName} ${user.lastName}`.trim() : "";
+  const initial = user?.firstName.charAt(0).toUpperCase() || "?";
 
   const tabs = [
     { href: "/personal-profile", label: t("tabs.personalInfo") },
@@ -28,8 +34,8 @@ export default function ProfileLayout({
           {initial}
         </div>
         <div>
-          <p className="text-lg font-bold text-foreground">{fullName}</p>
-          <p className="text-sm text-muted">{mockPersonalInfo.email}</p>
+          <p className="text-lg font-bold text-foreground">{fullName || "—"}</p>
+          <p className="text-sm text-muted">{user?.email ?? "—"}</p>
         </div>
       </div>
 
